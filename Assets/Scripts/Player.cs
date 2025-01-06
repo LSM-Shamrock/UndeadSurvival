@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class PlayerMoveController : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    [HideInInspector]
-    public float moveSpeed = 4f;
-    [HideInInspector]
-    public Vector3 inputVector = Vector3.zero;
+    [SerializeField]
+    private float moveSpeed;
+
+    private Vector3 inputVector = Vector3.zero;
 
     private void Update()
     {
