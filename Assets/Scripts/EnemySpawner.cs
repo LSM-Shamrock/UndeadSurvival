@@ -40,16 +40,17 @@ public class EnemySpawner : MonoBehaviour
         if (enemyPools.Length == 0)
             return;
 
-        float dist = spawnDistance * Random.Range(0.9f, 1.1f);
-        float angle = Random.Range(0f, 360f);
-        float x = Mathf.Cos(angle * Mathf.Deg2Rad);
-        float z = Mathf.Sin(angle * Mathf.Deg2Rad);
-        Vector3 dir = new Vector3(x, 0, z);
-        Vector3 playerPos = GameManager.Instance.player.transform.position;
-        Vector3 spawnPos = playerPos + dir * dist;
+        float _dist = spawnDistance * Random.Range(0.9f, 1.1f);
+        float _angle = Random.Range(0f, 360f);
+        float _x = Mathf.Cos(_angle * Mathf.Deg2Rad);
+        float _z = Mathf.Sin(_angle * Mathf.Deg2Rad);
+        Vector3 _dir = new Vector3(_x, 0, _z);
+        Vector3 _playerPos = GameManager.Player.transform.position;
+        Vector3 _spawnPos = _playerPos + _dir * _dist;
 
-        int enemyIndex = Random.Range(0, enemyPools.Length);
-        GameObject spawnEnemy = enemyPools[enemyIndex].SpawnObject();
-        spawnEnemy.transform.position = spawnPos;
+        int _enemyIndex = Random.Range(0, enemyPools.Length);
+        GameObject _spawnEnemy = enemyPools[_enemyIndex].SpawnObject();
+        _spawnEnemy.transform.parent = transform;
+        _spawnEnemy.transform.position = _spawnPos;
     }
 }

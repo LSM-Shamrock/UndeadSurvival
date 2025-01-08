@@ -13,21 +13,21 @@ public class ObjectPool
 
     public GameObject SpawnObject()
     {
-        GameObject spawnObject = null;
-        foreach (GameObject poolObject in poolObjects)
+        GameObject _spawnObject = null;
+        foreach (GameObject _poolObject in poolObjects)
         {
-            if (poolObject.activeSelf == false)
+            if (_poolObject.activeSelf == false)
             {
-                spawnObject = poolObject;
-                spawnObject.SetActive(true);
+                _spawnObject = _poolObject;
+                _spawnObject.SetActive(true);
                 break;
             }
         }
-        if (spawnObject == null)
+        if (_spawnObject == null)
         {
-            spawnObject = GameObject.Instantiate(original);
-            poolObjects.Add(spawnObject);
+            _spawnObject = GameObject.Instantiate(original);
+            poolObjects.Add(_spawnObject);
         } 
-        return spawnObject;
+        return _spawnObject;
     }
 }

@@ -2,32 +2,32 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed;
+    public PlayerStat Stat { get; private set; }
+    public int Health { get; private set; }
 
-    private Vector3 inputVector = Vector3.zero;
+    private Vector3 inputVec;
+
+    private void Awake()
+    {
+        Stat = StatManager.PlayerStat;
+        Health = Stat.maxHealth;
+    }
 
     private void Update()
     {
-        inputVector = Vector3.zero;
-        if (Input.GetKey(KeyCode.UpArrow) || 
-            Input.GetKey(KeyCode.W))
-            inputVector.z++;
-        if (Input.GetKey(KeyCode.DownArrow) || 
-            Input.GetKey(KeyCode.S))
-            inputVector.z--;
-        if (Input.GetKey(KeyCode.RightArrow) || 
-            Input.GetKey(KeyCode.D))
-            inputVector.x++;
-        if (Input.GetKey(KeyCode.LeftArrow) || 
-            Input.GetKey(KeyCode.A))
-            inputVector.x--;
-
-        if (inputVector != Vector3.zero)
+        inputVec = Vector3.zero;
+        inputVec.z = Input.GetAxisRaw("Vertical");
+        inputVec.x = Input.GetAxisRaw("Horizontal");
+        if (inputVec != Vector3.zero)
         {
-            transform.rotation = Quaternion.LookRotation(inputVector);
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.LookRotation(inputVec);
+            transform.Translate(Vector3.forward * Stat.moveSpeed * Time.deltaTime);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
     }
 }
 
