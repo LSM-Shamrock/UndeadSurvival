@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class PlayerHealthGauge : WorldSpaceUI
+public class PlayerHealthBar : WorldSpaceUI
 {
     [SerializeField]
-    private RectTransform gaugeFill;
+    private RectTransform fill;
 
     private Player player;
     private Vector3 offsetVector =  Vector3.up * 2f;
@@ -25,6 +25,6 @@ public class PlayerHealthGauge : WorldSpaceUI
     {
         Vector3 _scaleVec = Vector3.one;
         _scaleVec.x = value;
-        gaugeFill.localScale = _scaleVec;
+        fill.localScale = _scaleVec;
     }
 }

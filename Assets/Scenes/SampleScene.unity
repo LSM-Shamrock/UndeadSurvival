@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 74749514}
   - component: {fileID: 74749513}
   m_Layer: 5
-  m_Name: PlayerHealthGauge
+  m_Name: PlayerHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d8af8431b726b419c67af1c33f9af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gaugeFill: {fileID: 1268944049}
+  fill: {fileID: 1268944049}
 --- !u!114 &74749513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,7 +861,7 @@ GameObject:
   - component: {fileID: 1268944051}
   - component: {fileID: 1268944050}
   m_Layer: 5
-  m_Name: GaugeFill
+  m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
