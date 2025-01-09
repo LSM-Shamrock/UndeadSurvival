@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Stat = StatManager.PlayerStat;
+        Stat = GameManager.StatDatas.playerStat;
         Health = Stat.maxHealth;
     }
 

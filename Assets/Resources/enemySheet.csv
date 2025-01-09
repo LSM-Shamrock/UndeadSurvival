@@ -1,6 +1,0 @@
-EnemyType,moveSpeed,maxHealth,attackPower,attackDelay
-zombie1,0.1,10,5,0.2
-zombie2,0.1,11,6,0.2
-zombie3,0.1,12,7,0.2
-zombie4,0.1,13,8,0.2
-zombie5,0.1,14,9,0.2

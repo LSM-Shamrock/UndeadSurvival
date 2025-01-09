@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Player player;
     public static Player Player { get { return Instance.player; } }
 
-    public Player player;
+    public StatData statDatas;
+    public static StatData StatDatas { get { return Instance.statDatas; } }
 }

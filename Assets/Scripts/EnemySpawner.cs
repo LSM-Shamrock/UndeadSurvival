@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -11,16 +10,6 @@ public class EnemySpawner : MonoBehaviour
     private GameObject[] enemyOriginals;
 
     private float spawnTimer;
-    private ObjectPool[] enemyPools;
-
-    private void Awake()
-    {
-        enemyPools = new ObjectPool[enemyOriginals.Length];
-        for (int i = 0; i < enemyOriginals.Length; i++)
-        {
-            enemyPools[i] = new ObjectPool(enemyOriginals[i]);
-        }
-    }
 
     private void Update()
     {
@@ -37,20 +26,18 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (enemyPools.Length == 0)
+        if (enemyOriginals.Length == 0)
             return;
 
-        float _dist = spawnDistance * Random.Range(0.9f, 1.1f);
-        float _angle = Random.Range(0f, 360f);
-        float _x = Mathf.Cos(_angle * Mathf.Deg2Rad);
-        float _z = Mathf.Sin(_angle * Mathf.Deg2Rad);
-        Vector3 _dir = new Vector3(_x, 0, _z);
-        Vector3 _playerPos = GameManager.Player.transform.position;
-        Vector3 _spawnPos = _playerPos + _dir * _dist;
+        float _Dist = spawnDistance * Random.Range(0.9f, 1.1f);
+        float _Angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        Vector3 _Dir = new Vector3(Mathf.Cos(_Angle), 0, Mathf.Sin(_Angle));
+        Vector3 _PlayerPos = GameManager.Player.transform.position;
+        Vector3 _SpawnPos = _PlayerPos + _Dir * _Dist;
 
-        int _enemyIndex = Random.Range(0, enemyPools.Length);
-        GameObject _spawnEnemy = enemyPools[_enemyIndex].SpawnObject();
-        _spawnEnemy.transform.parent = transform;
-        _spawnEnemy.transform.position = _spawnPos;
+        int _EnemyIndex = Random.Range(0, enemyOriginals.Length);
+        GameObject _SpawnEnemy = PoolManager.Instance.SpawnObject(enemyOriginals[_EnemyIndex]);
+        _SpawnEnemy.transform.parent = transform;
+        _SpawnEnemy.transform.position = _SpawnPos;
     }
 }
