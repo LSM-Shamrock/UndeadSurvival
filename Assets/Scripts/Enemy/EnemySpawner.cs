@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 _SpawnPos = _PlayerPos + _Dir * _Dist;
 
         int _EnemyIndex = Random.Range(0, enemyOriginals.Length);
-        GameObject _SpawnEnemy = PoolManager.Instance.SpawnObject(enemyOriginals[_EnemyIndex]);
+        GameObject _SpawnEnemy = PoolManager.SpawnObject(enemyOriginals[_EnemyIndex]);
         _SpawnEnemy.transform.parent = transform;
         _SpawnEnemy.transform.position = _SpawnPos;
     }

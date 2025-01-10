@@ -1,24 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager
 {
-    private static PoolManager instance;
-    public static PoolManager Instance
-    {
-        get
-        {
-            if (instance == null)
-                instance = FindFirstObjectByType<PoolManager>();
-            if (instance == null)
-            {
-                GameObject _go = new GameObject("PoolManager");
-                instance = _go.AddComponent<PoolManager>();
-            }
-            return instance;
-        }
-    }
-
     private class ObjectPool
     {
         private GameObject original;
@@ -32,27 +16,33 @@ public class PoolManager : MonoBehaviour
         public GameObject SpawnObject()
         {
             GameObject _spawnObject = null;
-            foreach (GameObject _poolObject in poolObjects)
+
+            for (int i = poolObjects.Count - 1; i >= 0; i--)
             {
-                if (_poolObject.activeSelf == false)
+                if (poolObjects[i] == null)
                 {
-                    _spawnObject = _poolObject;
-                    _spawnObject.SetActive(true);
+                    poolObjects.RemoveAt(i);
+                }
+                else if (!poolObjects[i].activeSelf)
+                {
+                    _spawnObject = poolObjects[i];
                     break;
                 }
             }
+
             if (_spawnObject == null)
             {
-                _spawnObject = GameObject.Instantiate(original);
+                _spawnObject = Object.Instantiate(original);
                 poolObjects.Add(_spawnObject);
             }
+
             return _spawnObject;
         }
     }
 
-    private Dictionary<GameObject, ObjectPool> pools = new Dictionary<GameObject, ObjectPool>();
+    private static Dictionary<GameObject, ObjectPool> pools = new Dictionary<GameObject, ObjectPool>();
 
-    public GameObject SpawnObject(GameObject original)
+    public static GameObject SpawnObject(GameObject original)
     {
         if (!pools.ContainsKey(original))
         {

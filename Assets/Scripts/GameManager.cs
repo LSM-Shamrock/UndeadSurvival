@@ -1,23 +1,17 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour 
 {
-    private static GameManager instance;
-    private static GameManager Instance
+    private static Player player;
+    public static Player Player
     {
         get
         {
-            if (instance == null)
-            {
-                instance = FindFirstObjectByType<GameManager>();
-            }
-            return instance;
+            if (player == null)
+                player = FindFirstObjectByType<Player>();
+
+            return player;
         }
     }
 
-    public Player player;
-    public static Player Player { get { return Instance.player; } }
-
-    public StatData statDatas;
-    public static StatData StatDatas { get { return Instance.statDatas; } }
 }

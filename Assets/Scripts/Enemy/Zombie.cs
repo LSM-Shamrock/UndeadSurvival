@@ -4,6 +4,6 @@ public class Zombie : EnemyBase
 {
     private void Awake()
     {
-        Stat = GameManager.StatDatas.zombieStat;
+        Init(StatManager.ZombieStat);
     }
 }

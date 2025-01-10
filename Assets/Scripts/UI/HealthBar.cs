@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerHealthBar : WorldSpaceUI
+public class HealthBar : WorldSpaceUI
 {
     [SerializeField]
     private RectTransform fill;
@@ -11,20 +11,27 @@ public class PlayerHealthBar : WorldSpaceUI
     protected override void Awake()
     {
         base.Awake();
+
         player = GameManager.Player;
     }
 
     protected override void Update()
     {
         base.Update();
-        transform.position = player.transform.position + offsetVector;
-        SetFillValue((float)player.Health / player.Stat.maxHealth);
-    }
 
-    private void SetFillValue(float value)
-    {
+        transform.position = player.transform.position + offsetVector;
+
+        float _value;
+        if (player.MaxHealth != 0)
+        {
+            _value = (float)player.CurHealth / player.MaxHealth;
+        } 
+        else
+        {
+            _value = 0;
+        }
         Vector3 _scaleVec = Vector3.one;
-        _scaleVec.x = value;
+        _scaleVec.x = _value;
         fill.localScale = _scaleVec;
     }
 }

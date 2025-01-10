@@ -1,16 +1,17 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
-    public PlayerStat Stat { get; private set; }
-    public int Health { get; private set; }
+    public int MaxHealth { get; private set; }
+    public int CurHealth { get; private set; }
+    public float MoveSpeed { get; private set; }
+    public int AttackPower { get; private set; }
 
     private Vector3 inputVec;
 
     private void Awake()
     {
-        Stat = GameManager.StatDatas.playerStat;
-        Health = Stat.maxHealth;
+        Init(StatManager.PlayerStat);
     }
 
     private void Update()
@@ -21,13 +22,22 @@ public class Player : MonoBehaviour
         if (inputVec != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(inputVec);
-            transform.Translate(Vector3.forward * Stat.moveSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * MoveSpeed * Time.deltaTime);
         }
+    }
+
+    private void Init(PlayerStat stat)
+    {
+        MaxHealth = stat.maxHealth;
+        CurHealth = stat.maxHealth;
+        MoveSpeed = stat.moveSpeed;
+        AttackPower = stat.attackPower;
     }
 
     public void TakeDamage(int damage)
     {
-        Health -= damage;
+        CurHealth -= damage;
+        EffectManager.CreateEffect(EffectManager.BloodEffect, transform.position);
     }
 }
 
