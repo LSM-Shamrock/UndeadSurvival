@@ -2,42 +2,49 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable
 {
-    public int MaxHealth { get; private set; }
-    public int CurHealth { get; private set; }
-    public float MoveSpeed { get; private set; }
-    public int AttackPower { get; private set; }
-
-    private Vector3 inputVec;
-
-    private void Awake()
-    {
-        Init(StatManager.PlayerStat);
-    }
+    public int MaxHealth { get; set; }
+    public int CurHealth { get; set; }
+    public float MoveSpeed { get; set; }
+    public int PlaneLayer { get; set; }
+    public GameObject BloodParticle { get; set; }
+    public Vector3 MovePoint { get; set; }
 
     private void Update()
     {
-        inputVec = Vector3.zero;
-        inputVec.z = Input.GetAxisRaw("Vertical");
-        inputVec.x = Input.GetAxisRaw("Horizontal");
-        if (inputVec != Vector3.zero)
+        if (Input.GetMouseButton(0))
         {
-            transform.rotation = Quaternion.LookRotation(inputVec);
-            transform.Translate(Vector3.forward * MoveSpeed * Time.deltaTime);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit raycastHit;
+            float infinity = Mathf.Infinity;
+            LayerMask layerMask = 1 << PlaneLayer;
+            if (Physics.Raycast(ray, out raycastHit, infinity, layerMask))
+                MovePoint = raycastHit.point;
         }
-    }
 
-    private void Init(PlayerStat stat)
-    {
-        MaxHealth = stat.maxHealth;
-        CurHealth = stat.maxHealth;
-        MoveSpeed = stat.moveSpeed;
-        AttackPower = stat.attackPower;
+        Vector3 lookVecor = MovePoint - transform.position;
+        if (lookVecor != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(lookVecor);
+
+        float distance = Vector3.Distance(MovePoint, transform.position);
+        transform.Translate(Vector3.forward * Mathf.Min(distance, MoveSpeed * Time.deltaTime));
     }
 
     public void TakeDamage(int damage)
     {
-        CurHealth -= damage;
-        EffectManager.CreateEffect(EffectManager.BloodEffect, transform.position);
+        Particle.Create(BloodParticle, transform.position);
+        if (CurHealth > damage) 
+            CurHealth -= damage;
+        else
+            CurHealth = 0;
+    }
+
+    public void Init(GameObject bloodParticle, int planeLayer, int maxHealth, float moveSpeed)
+    {
+        BloodParticle = bloodParticle;
+        PlaneLayer = planeLayer;
+        MaxHealth = maxHealth;
+        CurHealth = maxHealth;
+        MoveSpeed = moveSpeed;
     }
 }
 
