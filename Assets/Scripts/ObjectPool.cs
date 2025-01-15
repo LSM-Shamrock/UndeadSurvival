@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool
 {
     private GameObject prefab;
     private List<GameObject> poolObjects = new List<GameObject>();
 
-    public void Init(GameObject prefab)
+    public ObjectPool(GameObject prefab)
     {
         this.prefab = prefab;
     }
@@ -28,8 +28,7 @@ public class ObjectPool : MonoBehaviour
         }
         if (index == poolObjects.Count)
         {
-            GameObject newObject = Instantiate(prefab);
-            newObject.transform.parent = transform;
+            GameObject newObject = Object.Instantiate(prefab);
             poolObjects.Add(newObject);
         }
         GameObject spawnObject = poolObjects[index];

@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 330585549}
   - component: {fileID: 330585550}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5493bdc1b0b6b5f4195c85c32bc041ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 4
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,11 +670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09db974c24288f74a8aacad1894a7c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  BloodParticle: {fileID: 0}
-  SpawnDistance: 0
-  SpawnDelay: 0
-  EnemyDatas: []
+  _spawnRange: 15
+  _spawnDelay: 0.5
 --- !u!4 &1274000475
 Transform:
   m_ObjectHideFlags: 0
@@ -734,10 +732,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraController: {fileID: 330585550}
-  _plane: {fileID: 1152628255162031383}
   _healthBar: {fileID: 256374363}
-  _player: {fileID: 4353534291198486023}
   _enemySpawner: {fileID: 1274000474}
+  _plane: {fileID: 1152628255162031383}
+  _player: {fileID: 4353534291198486023}
   _bloodParticle: {fileID: 1785964944820192382, guid: f2c3d7d5b7ebdd44aadedc02cab3e43f, type: 3}
   _enemySheet: {fileID: 11400000, guid: de0b891f021ff964abcf72c9e0a673a8, type: 2}
   _weaponSheet: {fileID: 11400000, guid: 6461cb33efad0a54f9392df3338c8ed0, type: 2}
@@ -1024,10 +1022,10 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 330585546}
   - {fileID: 1243527305}
   - {fileID: 1751349169}
+  - {fileID: 1274000475}
+  - {fileID: 330585546}
   - {fileID: 256374362}
   - {fileID: 6961468933235048270}
   - {fileID: 9169000012608660421}
-  - {fileID: 1274000475}

@@ -3,23 +3,13 @@ using UnityEngine;
 
 public class ObjectPoolManager
 {
-    private static Dictionary<GameObject, ObjectPool> pools = new Dictionary<GameObject, ObjectPool>();
-
-    private static Transform parent;
+    private static Dictionary<GameObject, ObjectPool> _pools = new Dictionary<GameObject, ObjectPool>();
 
     public static GameObject SpawnObject(GameObject prefab)
     {
-        if (!pools.ContainsKey(prefab))
-        {
-            GameObject gameObject = new GameObject($"@{prefab.name} Pool");
-            if (parent == null)
-                parent = new GameObject("@Pools").transform;
-            gameObject.transform.parent = parent;
-
-            ObjectPool objectPool = gameObject.AddComponent<ObjectPool>();
-            objectPool.Init(prefab);
-            pools.Add(prefab, objectPool);
-        }
-        return pools[prefab].SpawnObject();
+        if (!_pools.ContainsKey(prefab))
+            _pools.Add(prefab, new ObjectPool(prefab));
+        
+        return _pools[prefab].SpawnObject();
     }
 }

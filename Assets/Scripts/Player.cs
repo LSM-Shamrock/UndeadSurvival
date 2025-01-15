@@ -2,12 +2,23 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable
 {
-    public int MaxHealth { get; set; }
-    public int CurHealth { get; set; }
-    public float MoveSpeed { get; set; }
-    public int PlaneLayer { get; set; }
-    public GameObject BloodParticle { get; set; }
-    public Vector3 MovePoint { get; set; }
+    public int PlaneLayer { get; private set; }
+    public GameObject BloodParticle { get; private set; }
+    public Vector3 MovePoint { get; private set; }
+
+    public int MaxHealth { get; private set; }
+    public int CurHealth { get; private set; }
+    public float MoveSpeed { get; private set; }
+
+    private void Awake()
+    {
+        BloodParticle = GameManager.BloodParticle;
+        PlaneLayer = GameManager.Plane.gameObject.layer;
+
+        MaxHealth = 100;
+        CurHealth = 100;
+        MoveSpeed = 5f;
+    }
 
     private void Update()
     {
@@ -36,15 +47,6 @@ public class Player : MonoBehaviour, IDamageable
             CurHealth -= damage;
         else
             CurHealth = 0;
-    }
-
-    public void Init(GameObject bloodParticle, int planeLayer, int maxHealth, float moveSpeed)
-    {
-        BloodParticle = bloodParticle;
-        PlaneLayer = planeLayer;
-        MaxHealth = maxHealth;
-        CurHealth = maxHealth;
-        MoveSpeed = moveSpeed;
     }
 }
 

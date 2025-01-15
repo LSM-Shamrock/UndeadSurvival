@@ -6,29 +6,34 @@ public class HealthBar : WorldSpaceUI
     private RectTransform _fill;
 
     private Vector3 _offsetVector =  Vector3.up * 2f;
-    private Transform _targetTransform;
-    private IDamageable _targetDamageable;
+    public Transform TargetTransform { get; private set; }
+    public IDamageable TargetDamageable { get; private set; }
+
+    protected override void Awake()
+    {
+        SetTarget(GameManager.Player, GameManager.Player.transform);
+    }
 
     protected override void Update()
     {
         base.Update();
 
-        transform.position = _targetTransform.position + _offsetVector;
+        transform.position = TargetTransform.position + _offsetVector;
 
         float fillValue;
-        if (_targetDamageable.MaxHealth == 0)
+        if (TargetDamageable.MaxHealth == 0)
             fillValue = 0;
         else
-            fillValue = (float)_targetDamageable.CurHealth / _targetDamageable.MaxHealth;
+            fillValue = (float)TargetDamageable.CurHealth / TargetDamageable.MaxHealth;
         
         Vector3 scaleVec = Vector3.one;
         scaleVec.x = fillValue;
         _fill.localScale = scaleVec;
     }
 
-    public void Init(IDamageable targetDamageable, Transform targetTransform)
+    public void SetTarget(IDamageable damageable, Transform transform)
     {
-        _targetDamageable = targetDamageable;
-        _targetTransform = targetTransform;
+        TargetDamageable = damageable;
+        TargetTransform = transform;
     }
 }
