@@ -10,9 +10,8 @@ public class Enemy : MonoBehaviour, IDamageable
     public float CollisionDelay { get; set; }
     public float DespawnDistance { get; set; }
     private float _collisionTimer;
-
-    public Player TargetPlayer { get; set; }
-    public GameObject BloodParticle { get; set; }
+    private Player _targetPlayer;
+    private GameObject _bloodParticle;
 
     private void Awake()
     {
@@ -22,11 +21,14 @@ public class Enemy : MonoBehaviour, IDamageable
         rb.constraints |= RigidbodyConstraints.FreezePositionY;
         rb.constraints |= RigidbodyConstraints.FreezeRotationX;
         rb.constraints |= RigidbodyConstraints.FreezeRotationZ;
+
+        _targetPlayer = GameManager.Player;
+        _bloodParticle = GameManager.BloodParticle;
     }
 
     private void Update()
     {
-        Vector3 _playerPos = TargetPlayer.transform.position;
+        Vector3 _playerPos = _targetPlayer.transform.position;
         Vector3 _lookDir = Vector3.Normalize(_playerPos - transform.position);
         transform.rotation = Quaternion.LookRotation(_lookDir);
         transform.Translate(Vector3.forward * MoveSpeed * Time.deltaTime);
@@ -42,17 +44,17 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (_collisionTimer <= 0)
         {
-            if (collision.transform == TargetPlayer.transform)
+            if (collision.transform == _targetPlayer.transform)
             {
                 _collisionTimer = CollisionDelay;
-                TargetPlayer.TakeDamage(CollisionDamage);
+                _targetPlayer.TakeDamage(CollisionDamage);
             }
         }
     }
 
     public void TakeDamage(int damage)
     {
-        Particle.Create(BloodParticle, transform.position);
+        ParticleManager.CreateParticle(_bloodParticle, transform.position);
         if (CurHealth > damage)
             CurHealth -= damage;
         else

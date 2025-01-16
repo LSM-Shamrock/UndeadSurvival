@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Plane          _plane;
     [SerializeField] private Player         _player;
     [SerializeField] private GameObject     _bloodParticle;
-    [SerializeField] private EnemySheet     _enemySheet;
-    [SerializeField] private WeaponSheet    _weaponSheet;
+    [SerializeField] private EnemyData[]    _enemyDatas;
+    [SerializeField] private WeaponData[]   _weaponDatas;
 
     public static Plane Plane
     {
@@ -31,26 +31,12 @@ public class GameManager : MonoBehaviour
     {
         get { return Instance._bloodParticle; }
     }
-    public static EnemySheet EnemySheet
+    public static EnemyData[] EnemyDatas
     {
-        get { return Instance._enemySheet; }
+        get { return Instance._enemyDatas; }
     }
-    public static WeaponSheet WeaponSheet
+    public static WeaponData[] WeaponDatas
     {
-        get { return Instance._weaponSheet; }
-    }
-
-    private void Awake()
-    {
-        foreach (WeaponData weaponData in _weaponSheet.weaponDatas)
-        {
-            GameObject go = new GameObject($"{weaponData.name} Activator");
-            go.transform.parent = Player.transform;
-            go.transform.localPosition = Vector3.zero;
-            WeaponActivator weaponActivator = go.AddComponent<WeaponActivator>();
-            weaponActivator.Prefab = weaponData.prefab;
-            weaponActivator.Type = weaponData.type;
-            weaponActivator.Stat = weaponData.defaultStat;
-        }
+        get { return Instance._weaponDatas; }
     }
 }

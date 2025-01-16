@@ -2,36 +2,32 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObjectPool
+public class ObjectPool : MonoBehaviour
 {
-    private GameObject prefab;
-    private List<GameObject> poolObjects = new List<GameObject>();
-
-    public ObjectPool(GameObject prefab)
-    {
-        this.prefab = prefab;
-    }
+    public GameObject prefab;
+    private List<GameObject> _poolObjects = new List<GameObject>();
 
     public GameObject SpawnObject()
     {
         int index;
-        for (index = 0; index < poolObjects.Count; index++)
+        for (index = 0; index < _poolObjects.Count; index++)
         {
-            if (poolObjects[index] == null)
+            if (_poolObjects[index] == null)
             {
-                poolObjects.RemoveAt(index);
+                _poolObjects.RemoveAt(index);
                 index--;
                 continue;
             }
-            if (!poolObjects[index].activeSelf)
+            if (!_poolObjects[index].activeSelf)
                 break;
         }
-        if (index == poolObjects.Count)
+        if (index == _poolObjects.Count)
         {
-            GameObject newObject = Object.Instantiate(prefab);
-            poolObjects.Add(newObject);
+            GameObject newObject = Instantiate(prefab);
+            newObject.transform.parent = transform;
+            _poolObjects.Add(newObject);
         }
-        GameObject spawnObject = poolObjects[index];
+        GameObject spawnObject = _poolObjects[index];
         spawnObject.SetActive(true);
         return spawnObject;
     }

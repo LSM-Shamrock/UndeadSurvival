@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable
 {
-    public int PlaneLayer { get; private set; }
-    public GameObject BloodParticle { get; private set; }
-    public Vector3 MovePoint { get; private set; }
+    private int _planeLayer;
+    private GameObject _bloodParticle;
+    private Vector3 _movePoint;
 
     public int MaxHealth { get; private set; }
     public int CurHealth { get; private set; }
@@ -12,8 +12,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        BloodParticle = GameManager.BloodParticle;
-        PlaneLayer = GameManager.Plane.gameObject.layer;
+        _bloodParticle = GameManager.BloodParticle;
+        _planeLayer = GameManager.Plane.gameObject.layer;
 
         MaxHealth = 100;
         CurHealth = 100;
@@ -27,22 +27,22 @@ public class Player : MonoBehaviour, IDamageable
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit raycastHit;
             float infinity = Mathf.Infinity;
-            LayerMask layerMask = 1 << PlaneLayer;
+            LayerMask layerMask = 1 << _planeLayer;
             if (Physics.Raycast(ray, out raycastHit, infinity, layerMask))
-                MovePoint = raycastHit.point;
+                _movePoint = raycastHit.point;
         }
 
-        Vector3 lookVecor = MovePoint - transform.position;
+        Vector3 lookVecor = _movePoint - transform.position;
         if (lookVecor != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(lookVecor);
 
-        float distance = Vector3.Distance(MovePoint, transform.position);
+        float distance = Vector3.Distance(_movePoint, transform.position);
         transform.Translate(Vector3.forward * Mathf.Min(distance, MoveSpeed * Time.deltaTime));
     }
 
     public void TakeDamage(int damage)
     {
-        Particle.Create(BloodParticle, transform.position);
+        ParticleManager.CreateParticle(_bloodParticle, transform.position);
         if (CurHealth > damage) 
             CurHealth -= damage;
         else

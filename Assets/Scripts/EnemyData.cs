@@ -1,10 +1,8 @@
-using System;
 using UnityEngine;
 
-[Serializable]
-public class EnemyData
+[CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyData")]
+public class EnemyData : ScriptableObject
 {
-    public string name;
     public GameObject prefab;
     public int maxHealth;
     public float moveSpeed;

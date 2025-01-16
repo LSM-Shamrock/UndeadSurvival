@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8ce6cf0b4dad748bc889e5e77416f7, type: 3}
+  m_Name: Mace
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7026188314622579200, guid: fa441585250c42f4aaaf6d8103762215, type: 3}
+  type: 1
+  description: 
+  levelupDescription: 
+  defaultStat:
+    activationInterval: 10
+    damage: 10
+    speed: 10
+    range: 1
+    multiple: 5
+    volleyCount: 1
+    volleyInterval: 0
+    lifetime: Infinity
+    pierceCount: 2147483647
+  levelupStatDelta:
+    activationInterval: 0
+    damage: 0
+    speed: 0
+    range: 0
+    multiple: 0
+    volleyCount: 0
+    volleyInterval: 0
+    lifetime: 0
+    pierceCount: 0

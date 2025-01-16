@@ -1,71 +1,36 @@
 using System.Collections;
-using System.Resources;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponActivator : MonoBehaviour
+public class WeaponActivator : ObjectPool
 {
-    public WeaponStat Stat { get; set; }
-    public WeaponType Type { get; set; }
-    public GameObject Prefab { get; set; }
+    public WeaponStat weaponStat;
+    public WeaponType weaponType;
 
-    private float _activationTimer;
-    private bool _isActivation;
-
-    private void Update()
+    public GameObject WeaponPrefab
     {
-        if (_isActivation)
-            return;
-
-        if (_activationTimer > 0)
-            _activationTimer -= Time.deltaTime;
-        else if (!_isActivation)
-        {
-            _activationTimer = Stat.activationInterval;
-            StartCoroutine(Activation());
-        }
+        get { return prefab; }
+        set { prefab = value; }
     }
 
-    private IEnumerator Activation()
+    public IEnumerator ActivationLoop()
     {
-        _isActivation = true;
-        for (int i = 1; i <= Stat.volleyCount; i++)
+        while (true)
         {
-            for (int j = 0; j < Stat.concurrentCount; j++)
-                CreateWeapon(j);
-
-            if (i < Stat.volleyCount)
-                yield return new WaitForSeconds(Stat.volleyInterval);
-        }
-        _isActivation = false;
-    }
-
-    private void CreateWeapon(int index)
-    {
-        GameObject go;
-        if (index < transform.childCount)
-        {
-            go = transform.GetChild(index).gameObject;
-            go.SetActive(true);
-        }
-        else
-            go = ObjectPoolManager.SpawnObject(Prefab);
-
-        Weapon weapon = go.GetComponent<Weapon>() ?? go.AddComponent<Weapon>();
-        weapon.Duration = Stat.duration;
-        weapon.Damage = Stat.damage;
-        weapon.PierceCount = Stat.pierceCount;
-
-        if (Type == WeaponType.Shoot)
-        {
-
-        }
-        if (Type == WeaponType.Spin)
-        {
-            weapon.transform.parent = transform;
-            weapon.transform.localPosition = Vector3.zero;
-            weapon.transform.localRotation = Quaternion.Euler(0f, 360f / (index + 1), 0f);
-            weapon.transform.Translate(Vector3.forward * Stat.range);
+            for (int volley = 1; volley <= weaponStat.volleyCount; volley++)
+            {
+                for (int number = 1; number <= weaponStat.multiple; number++)
+                {
+                    GameObject go = SpawnObject();
+                    Weapon weapon = go.GetComponent<Weapon>() ?? go.AddComponent<Weapon>();
+                    weapon.number = number;
+                    weapon.stat = weaponStat;
+                    weapon.type = weaponType;
+                    weapon.Activation();
+                }
+                if (volley < weaponStat.volleyCount)
+                    yield return new WaitForSeconds(weaponStat.volleyInterval);
+            }
+            yield return new WaitForSeconds(weaponStat.activationInterval);
         }
     }
 }

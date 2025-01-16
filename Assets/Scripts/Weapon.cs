@@ -1,14 +1,16 @@
+using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(Collider))]
+[RequireComponent(typeof(Rigidbody))]
 public class Weapon : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     private Collider _collider;
+    private Transform _player;
 
-    public float Duration { get; set; }
-    public int Damage { get; set; }
-    public int PierceCount { get; set; }
+    public int number;
+    public WeaponStat stat;
+    public WeaponType type;
 
     private void Awake()
     {
@@ -19,14 +21,16 @@ public class Weapon : MonoBehaviour
         _rigidbody.constraints |= RigidbodyConstraints.FreezeRotationX;
         _rigidbody.constraints |= RigidbodyConstraints.FreezeRotationZ;
 
-        _collider = GetComponent<Collider>();
+        _collider = GetComponentInChildren<Collider>();
         _collider.isTrigger = true;
+
+        _player = GameManager.Player.transform;
     }
 
     private void Update()
     {
-        if (Duration > 0f)
-            Duration -= Time.deltaTime;
+        if (stat.lifetime > 0f)
+            stat.lifetime -= Time.deltaTime;
         else
             gameObject.SetActive(false);
     }
@@ -36,11 +40,33 @@ public class Weapon : MonoBehaviour
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.TakeDamage(Damage);
-            if (PierceCount > 0)
-                PierceCount--;
+            enemy.TakeDamage(stat.damage);
+            if (stat.pierceCount > 0)
+                stat.pierceCount--;
             else
                 gameObject.SetActive(false);
+        }
+    }
+
+    public void Activation()
+    {
+        StartCoroutine(type.ToString());
+    }
+
+    private IEnumerator Shoot()
+    {
+        yield break;
+    }
+
+    private IEnumerator Spin()
+    {
+        transform.rotation = Quaternion.Euler(0, 360f / stat.multiple * number, 0);
+        while (true)
+        {
+            transform.position = _player.transform.position;
+            transform.Translate(Vector3.forward * stat.range);
+            yield return null;
+            transform.Rotate(0, stat.speed * Time.deltaTime, 0);
         }
     }
 }

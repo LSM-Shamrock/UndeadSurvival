@@ -13,10 +13,4 @@ public class Particle : MonoBehaviour
     {
         particle.Play();
     }
-
-    public static void Create(GameObject prefab, Vector3 position)
-    {
-        Transform particle = ObjectPoolManager.SpawnObject(prefab).transform;
-        particle.position = position;
-    }
 }
