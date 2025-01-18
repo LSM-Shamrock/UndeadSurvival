@@ -1,49 +1,41 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemySpawner : ObjectPoolManager
+public class EnemySpawner : MonoBehaviour 
 {
     [SerializeField]
-    private float _spawnRange;
+    private float _spawnRadius;
     [SerializeField]
     private float _spawnDelay;
-
-    private float _spawnTimer;
-    private EnemyData[] _enemyDatas;
-    private Transform _player;
-
-    private void Awake()
-    {
-        _enemyDatas = GameManager.EnemyDatas;
-        _player = GameManager.Player.transform;
-    }
+    private float _spawnTimeer;
 
     private void Update()
     {
-        if (_spawnTimer < _spawnDelay)
-        {
-            _spawnTimer += Time.deltaTime;
-        }
+        if (_spawnTimeer > 0)
+            _spawnTimeer -= Time.deltaTime;
         else
         {
-            _spawnTimer = 0f;
-            EnemySpawn();
+            _spawnTimeer = _spawnDelay;
+            Spawn();
         }
     }
 
-    private void EnemySpawn()
+    private void Spawn()
     {
-        if (_enemyDatas.Length == 0)
+        EnemyData[] enemyDatas = GameManager.EnemyDatas;
+        if (enemyDatas.Length == 0)
             return;
 
-        EnemyData data = _enemyDatas[Random.Range(0, _enemyDatas.Length)];
+        EnemyData data = enemyDatas[Random.Range(0, enemyDatas.Length)];
 
-        float dist = _spawnRange * Random.Range(0.9f, 1.1f);
+        float radius = _spawnRadius * Random.Range(0.9f, 1f);
         float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
         Vector3 dir = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
-        Vector3 playerPos = _player.position;
-        Vector3 pos = playerPos + dir * dist;
+        Vector3 playerPos = GameManager.Player.transform.position;
+        Vector3 pos = playerPos + dir * radius;
 
-        GameObject go = SpawnObject(data.prefab);
+        GameObject go = ObjectPoolManager.SpawnObject(data.prefab);
         go.transform.position = pos;
 
         Enemy enemy = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();

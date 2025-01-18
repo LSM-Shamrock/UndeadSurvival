@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8ce6cf0b4dad748bc889e5e77416f7, type: 3}
+  m_Name: Bullet
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7834774198369682764, guid: e112b75b4d363624589a583609aebc0e, type: 3}
+  description: 
+  levelupDescription: 
+  isAttachToLauncher: 0
+  defaultStat:
+    activationInterval: 0.5
+    multiple: 1
+    repeatCount: 1
+    repeatInterval: 0
+    rotationRadius: 0
+    rotationSpeed: 0
+    shootSpeed: 10
+    collisionDamage: 50
+    tickDamageInterval: Infinity
+    pierceCount: 0
+    timeToDisable: Infinity
+    shootDistanceToDisable: 10
+  levelupStatDelta:
+    activationInterval: 0
+    multiple: 0
+    repeatCount: 0
+    repeatInterval: 0
+    rotationRadius: 0
+    rotationSpeed: 0
+    shootSpeed: 0
+    collisionDamage: 0
+    tickDamageInterval: 0
+    pierceCount: 0
+    timeToDisable: 0
+    shootDistanceToDisable: 0

@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class Particle : MonoBehaviour
 {
-    private ParticleSystem particle;
-
-    private void Awake()
-    {
-        particle = GetComponent<ParticleSystem>();
-    }
+    [SerializeField]
+    private ParticleSystem _particle;
 
     private void OnEnable()
     {
-        particle.Play();
+        _particle.Play();
     }
 }

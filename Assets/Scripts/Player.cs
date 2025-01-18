@@ -1,33 +1,34 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour, IDamageable
 {
-    private int _planeLayer;
-    private GameObject _bloodParticle;
     private Vector3 _movePoint;
 
-    public int MaxHealth { get; private set; }
-    public int CurHealth { get; private set; }
-    public float MoveSpeed { get; private set; }
+    public int maxHealth;
+    public int curHealth;
+    public float moveSpeed;
+
+    public int Exp { get; private set; }
 
     private void Awake()
     {
-        _bloodParticle = GameManager.BloodParticle;
-        _planeLayer = GameManager.Plane.gameObject.layer;
-
-        MaxHealth = 100;
-        CurHealth = 100;
-        MoveSpeed = 5f;
+        WeaponLauncherSetup();
     }
 
     private void Update()
+    {
+        MoveUpdate();
+    }
+
+    public void MoveUpdate()
     {
         if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit raycastHit;
             float infinity = Mathf.Infinity;
-            LayerMask layerMask = 1 << _planeLayer;
+            LayerMask layerMask = 1 << GameManager.Plane.layer;
             if (Physics.Raycast(ray, out raycastHit, infinity, layerMask))
                 _movePoint = raycastHit.point;
         }
@@ -37,16 +38,32 @@ public class Player : MonoBehaviour, IDamageable
             transform.rotation = Quaternion.LookRotation(lookVecor);
 
         float distance = Vector3.Distance(_movePoint, transform.position);
-        transform.Translate(Vector3.forward * Mathf.Min(distance, MoveSpeed * Time.deltaTime));
+        transform.Translate(Vector3.forward * Mathf.Min(distance, moveSpeed * Time.deltaTime));
     }
 
     public void TakeDamage(int damage)
     {
-        ParticleManager.CreateParticle(_bloodParticle, transform.position);
-        if (CurHealth > damage) 
-            CurHealth -= damage;
+        GameManager.DamageEffect(transform.position);
+
+        if (curHealth > damage) 
+            curHealth -= damage;
         else
-            CurHealth = 0;
+        {
+            curHealth = 0;
+            //gameObject.SetActive(false);
+        }
+    }
+
+    private void WeaponLauncherSetup()
+    {
+        WeaponData[] weaponDatas = GameManager.WeaponDatas;
+
+        foreach (var weaponData in weaponDatas)
+        {
+            GameObject go = new GameObject($"{weaponData.name} Launcher");
+            WeaponLauncher launcher = go.AddComponent<WeaponLauncher>();
+            launcher.LauncherSetup(weaponData);
+        }
     }
 }
 

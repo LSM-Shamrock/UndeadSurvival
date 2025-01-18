@@ -1,72 +1,101 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Weapon : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
-    private Collider _collider;
-    private Transform _player;
+    private WeaponStat _stat;
 
-    public int number;
-    public WeaponStat stat;
-    public WeaponType type;
+    private Dictionary<Collider, Coroutine> _collisionCoroutines = new Dictionary<Collider, Coroutine>();
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.linearDamping = 1f;
-        _rigidbody.angularDamping = 1f;
-        _rigidbody.constraints |= RigidbodyConstraints.FreezePositionY;
-        _rigidbody.constraints |= RigidbodyConstraints.FreezeRotationX;
-        _rigidbody.constraints |= RigidbodyConstraints.FreezeRotationZ;
-
-        _collider = GetComponentInChildren<Collider>();
-        _collider.isTrigger = true;
-
-        _player = GameManager.Player.transform;
-    }
-
-    private void Update()
-    {
-        if (stat.lifetime > 0f)
-            stat.lifetime -= Time.deltaTime;
-        else
-            gameObject.SetActive(false);
+        Collider collider = GetComponentInChildren<Collider>();
+        collider.isTrigger = true;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Enemy enemy = other.gameObject.GetComponent<Enemy>();
-        if (enemy != null)
+        if (other.tag == "Enemy")
         {
-            enemy.TakeDamage(stat.damage);
-            if (stat.pierceCount > 0)
-                stat.pierceCount--;
-            else
-                gameObject.SetActive(false);
+            Coroutine coroutine = StartCoroutine(CollisionCoroutine(other));
+            _collisionCoroutines[other] = coroutine;
         }
     }
 
-    public void Activation()
+    private void OnTriggerExit(Collider other)
     {
-        StartCoroutine(type.ToString());
+        if (other.tag == "Enemy")
+        {
+            if (_collisionCoroutines.TryGetValue(other, out Coroutine coroutine))
+                StopCoroutine(coroutine);
+        }
+    }
+
+    public void Activation(WeaponStat stat)
+    {
+        _stat = stat;
+        StartCoroutine(Shoot());
+        StartCoroutine(Rotation());
+        StartCoroutine(TimeToDisable());
     }
 
     private IEnumerator Shoot()
     {
-        yield break;
+        float shootDistance = 0f;
+        while (shootDistance < _stat.shootDistanceToDisable)
+        {
+            yield return null;
+            transform.Translate(Vector3.forward * _stat.shootSpeed * Time.deltaTime);
+            shootDistance += _stat.shootSpeed * Time.deltaTime;
+        }
+        gameObject.SetActive(false);
     }
 
-    private IEnumerator Spin()
+    private IEnumerator Rotation()
     {
-        transform.rotation = Quaternion.Euler(0, 360f / stat.multiple * number, 0);
         while (true)
         {
-            transform.position = _player.transform.position;
-            transform.Translate(Vector3.forward * stat.range);
+            transform.Translate(Vector3.forward * _stat.rotationRadius);
             yield return null;
-            transform.Rotate(0, stat.speed * Time.deltaTime, 0);
+            transform.Translate(Vector3.forward * -_stat.rotationRadius);
+            transform.Rotate(0, _stat.rotationSpeed * Time.deltaTime, 0);
+        }
+    }
+
+    private IEnumerator TimeToDisable()
+    {
+        yield return new WaitForSeconds(_stat.timeToDisable);
+        gameObject.SetActive(false);
+    }
+
+    private IEnumerator CollisionCoroutine(Collider collider)
+    {
+        Enemy enemy = collider.gameObject.GetComponent<Enemy>();
+        if (enemy == null) 
+            yield break;
+
+        Action enemyEnebleAction = () => 
+        {
+            Coroutine coroutine = _collisionCoroutines[collider];
+            if (coroutine != null)
+                StopCoroutine(coroutine); 
+        };
+        enemy.enableActions.Add(enemyEnebleAction);
+
+        if (_stat.pierceCount > 0)
+            _stat.pierceCount--;
+        else
+            gameObject.SetActive(false);
+
+        while (true)
+        {
+            enemy.TakeDamage(_stat.collisionDamage);
+            yield return new WaitForSeconds(_stat.tickDamageInterval);
         }
     }
 }
