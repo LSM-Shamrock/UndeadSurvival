@@ -50,11 +50,11 @@ public class GameManager : MonoBehaviour
         DamageCount effectDamageCount = go.GetComponent<DamageCount>();
         effectDamageCount.EffectStart(position, damage);
     }
-
-    public static void SpawnExp(Vector3 position)
+    public static void DropExp(Vector3 position, int amount)
     {
         GameObject go = ObjectPoolManager.SpawnObject(Instance._exp);
         go.transform.position = position;
-        
+        Exp exp = go.GetComponent<Exp>();
+        exp.amount = amount;
     }
 }

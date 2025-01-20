@@ -24,9 +24,9 @@ MonoBehaviour:
     rotationRadius: 0
     rotationSpeed: 0
     shootSpeed: 10
-    collisionDamage: 50
-    tickDamageInterval: Infinity
-    pierceCount: 0
+    damage: 10
+    stayDamageInterval: Infinity
+    penetrationCountToDontDisable: Infinity
     timeToDisable: Infinity
     shootDistanceToDisable: 10
   levelupStatDelta:
@@ -37,8 +37,8 @@ MonoBehaviour:
     rotationRadius: 0
     rotationSpeed: 0
     shootSpeed: 0
-    collisionDamage: 0
-    tickDamageInterval: 0
-    pierceCount: 0
+    damage: 0
+    stayDamageInterval: 0
+    penetrationCountToDontDisable: 0
     timeToDisable: 0
     shootDistanceToDisable: 0

@@ -1,15 +1,13 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Player : MonoBehaviour, IDamageable
+public class Player : MonoBehaviour
 {
     private Vector3 _movePoint;
 
     public int maxHealth;
     public int curHealth;
     public float moveSpeed;
-
-    public int Exp { get; private set; }
 
     private void Awake()
     {

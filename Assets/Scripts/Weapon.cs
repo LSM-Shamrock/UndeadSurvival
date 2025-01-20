@@ -2,38 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Weapon : MonoBehaviour
 {
     private WeaponStat _stat;
-
-    private Dictionary<Collider, Coroutine> _collisionCoroutines = new Dictionary<Collider, Coroutine>();
+    private List<Enemy> _stayDamageWaitingEnemys = new List<Enemy>();
 
     private void Awake()
     {
         Collider collider = GetComponentInChildren<Collider>();
         collider.isTrigger = true;
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Enemy")
-        {
-            Coroutine coroutine = StartCoroutine(CollisionCoroutine(other));
-            _collisionCoroutines[other] = coroutine;
-        }
-    }
+        if (other.tag != Enemy.TAG)
+            return;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Enemy")
-        {
-            if (_collisionCoroutines.TryGetValue(other, out Coroutine coroutine))
-                StopCoroutine(coroutine);
-        }
+        Enemy enemy = other.GetComponent<Enemy>();
+        if (enemy == null)
+            return;
+
+        if (_stayDamageWaitingEnemys.Contains(enemy))
+            return;
+
+        StartCoroutine(CollisionDamageApply(enemy));
     }
 
     public void Activation(WeaponStat stat)
@@ -43,7 +40,6 @@ public class Weapon : MonoBehaviour
         StartCoroutine(Rotation());
         StartCoroutine(TimeToDisable());
     }
-
     private IEnumerator Shoot()
     {
         float shootDistance = 0f;
@@ -55,7 +51,6 @@ public class Weapon : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
-
     private IEnumerator Rotation()
     {
         while (true)
@@ -66,36 +61,23 @@ public class Weapon : MonoBehaviour
             transform.Rotate(0, _stat.rotationSpeed * Time.deltaTime, 0);
         }
     }
-
     private IEnumerator TimeToDisable()
     {
         yield return new WaitForSeconds(_stat.timeToDisable);
         gameObject.SetActive(false);
     }
-
-    private IEnumerator CollisionCoroutine(Collider collider)
+    private IEnumerator CollisionDamageApply(Enemy enemy)
     {
-        Enemy enemy = collider.gameObject.GetComponent<Enemy>();
-        if (enemy == null) 
-            yield break;
+        _stayDamageWaitingEnemys.Add(enemy);
 
-        Action enemyEnebleAction = () => 
-        {
-            Coroutine coroutine = _collisionCoroutines[collider];
-            if (coroutine != null)
-                StopCoroutine(coroutine); 
-        };
-        enemy.enableActions.Add(enemyEnebleAction);
+        enemy.TakeDamage(_stat.damage);
 
-        if (_stat.pierceCount > 0)
-            _stat.pierceCount--;
+        if (_stat.penetrationCountToDontDisable > 0)
+            _stat.penetrationCountToDontDisable--;
         else
             gameObject.SetActive(false);
 
-        while (true)
-        {
-            enemy.TakeDamage(_stat.collisionDamage);
-            yield return new WaitForSeconds(_stat.tickDamageInterval);
-        }
+        yield return new WaitForSeconds(_stat.stayDamageInterval);
+        _stayDamageWaitingEnemys.Remove(enemy);
     }
 }

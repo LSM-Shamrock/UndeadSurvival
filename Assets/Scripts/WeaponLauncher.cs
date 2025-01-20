@@ -44,8 +44,8 @@ public class WeaponLauncher : MonoBehaviour
                     go.transform.parent = transform;
 
                 go.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                if (Enemy.nearest != null)
-                    go.transform.LookAt(Enemy.nearest.transform.position);
+                if (Enemy.nearestEnemy != null)
+                    go.transform.LookAt(Enemy.nearestEnemy.transform.position);
                 go.transform.Rotate(0f, 360f / weaponStat.multiple * number, 0f);
 
                 Weapon weapon = go.GetComponent<Weapon>() ?? go.AddComponent<Weapon>();

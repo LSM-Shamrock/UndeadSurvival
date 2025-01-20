@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Zombie
   m_EditorClassIdentifier: 
   prefab: {fileID: 7855225948450215355, guid: 8747ca7e303d7684b955eb812de8f814, type: 3}
-  maxHealth: 100
-  moveSpeed: 2
-  collisionDamage: 10
+  stat:
+    maxHealth: 100
+    moveSpeed: 2
+    collisionDamage: 10
+    dropExpAmount: 10

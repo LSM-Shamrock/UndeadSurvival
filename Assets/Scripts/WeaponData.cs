@@ -23,9 +23,9 @@ public class WeaponData : ScriptableObject
         rotationSpeed = 0f,
         shootSpeed = 0f,
 
-        collisionDamage = 10,
-        tickDamageInterval = Mathf.Infinity,
-        pierceCount = Mathf.Infinity,
+        damage = 10,
+        stayDamageInterval = Mathf.Infinity,
+        penetrationCountToDontDisable = Mathf.Infinity,
 
         timeToDisable = Mathf.Infinity,
         shootDistanceToDisable = Mathf.Infinity,
