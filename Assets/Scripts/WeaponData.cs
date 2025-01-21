@@ -24,7 +24,8 @@ public class WeaponData : ScriptableObject
         shootSpeed = 0f,
 
         damage = 10,
-        stayDamageInterval = Mathf.Infinity,
+        knockback = 10.5f,
+        stayEffectInterval = Mathf.Infinity,
         penetrationCountToDontDisable = Mathf.Infinity,
 
         timeToDisable = Mathf.Infinity,

@@ -15,7 +15,8 @@ public struct WeaponStat
     [Tooltip("발사 속도")] public float shootSpeed;
     [Space]
     [Tooltip("피해량")] public int damage;
-    [Tooltip("체류 피해 간격")] public float stayDamageInterval;
+    [Tooltip("넉백")] public float knockback;
+    [Tooltip("체류 효과 간격")] public float stayEffectInterval;
     [Tooltip("비활성화하지 않을 관통 횟수")] public float penetrationCountToDontDisable;
     [Space]
     [Tooltip("비활성화할 시간")] public float timeToDisable;

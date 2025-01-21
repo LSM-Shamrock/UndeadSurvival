@@ -3,23 +3,26 @@ using UnityEngine;
 
 public class WeaponLauncher : MonoBehaviour
 {
-    public GameObject weaponPrefab;
-    public WeaponStat weaponStat;
-    public bool isAttachToLauncher;
+    private GameObject _weaponPrefab;
+    private WeaponStat _weaponStat;
+    private bool _isAttachToLauncher;
     private float _activationTimer;
+    private Transform _playerTransform;
 
     private void Update()
     {
-        Transform playerTransform = GameManager.Player.transform;
-        transform.position = playerTransform.position;
+        transform.position = _playerTransform.position;
     }
 
-    public void LauncherSetup(WeaponData weaponData)
+    public static void Create(WeaponData weaponData, Transform playerTransform)
     {
-        weaponPrefab = weaponData.prefab;
-        weaponStat = weaponData.defaultStat;
-        isAttachToLauncher = weaponData.isAttachToLauncher;
-        StartCoroutine(ActivationLoop());
+        GameObject go = new GameObject($"{weaponData.name} Launcher");
+        WeaponLauncher launcher = go.AddComponent<WeaponLauncher>();
+        launcher._weaponPrefab = weaponData.prefab;
+        launcher._weaponStat = weaponData.defaultStat;
+        launcher._isAttachToLauncher = weaponData.isAttachToLauncher;
+        launcher._playerTransform = playerTransform;
+        launcher.StartCoroutine(launcher.ActivationLoop());
     }
 
     private IEnumerator ActivationLoop()
@@ -27,32 +30,32 @@ public class WeaponLauncher : MonoBehaviour
         while (true)
         {
             yield return Launch();
-            yield return new WaitForSeconds(weaponStat.activationInterval);
+            yield return new WaitForSeconds(_weaponStat.activationInterval);
         }
     }
 
     private IEnumerator Launch()
     {
-        for (int repeat = 1; repeat <= weaponStat.repeatCount; repeat++)
+        for (int repeat = 1; repeat <= _weaponStat.repeatCount; repeat++)
         {
 
-            for (int number = 1; number <= weaponStat.multiple; number++)
+            for (int number = 1; number <= _weaponStat.multiple; number++)
             {
-                GameObject go = ObjectPoolManager.SpawnObject(weaponPrefab);
+                GameObject go = ObjectPoolManager.SpawnObject(_weaponPrefab);
                 go.transform.position = transform.position;
-                if (isAttachToLauncher)
+                if (_isAttachToLauncher)
                     go.transform.parent = transform;
 
                 go.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 if (Enemy.nearestEnemy != null)
                     go.transform.LookAt(Enemy.nearestEnemy.transform.position);
-                go.transform.Rotate(0f, 360f / weaponStat.multiple * number, 0f);
+                go.transform.Rotate(0f, 360f / _weaponStat.multiple * number, 0f);
 
                 Weapon weapon = go.GetComponent<Weapon>() ?? go.AddComponent<Weapon>();
-                weapon.Activation(weaponStat);
+                weapon.Activation(_weaponStat);
             }
-            if (repeat < weaponStat.repeatCount)
-                yield return new WaitForSeconds(weaponStat.repeatInterval);
+            if (repeat < _weaponStat.repeatCount)
+                yield return new WaitForSeconds(_weaponStat.repeatInterval);
         }
     }
 }

@@ -9,7 +9,8 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class Weapon : MonoBehaviour
 {
     private WeaponStat _stat;
-    private List<Enemy> _stayDamageWaitingEnemys = new List<Enemy>();
+    private List<Enemy> _stayEffectWaitingEnemys = new List<Enemy>();
+    private WaitForSeconds _waitForStayEffectInterval;
 
     private void Awake()
     {
@@ -27,15 +28,17 @@ public class Weapon : MonoBehaviour
         if (enemy == null)
             return;
 
-        if (_stayDamageWaitingEnemys.Contains(enemy))
+        if (_stayEffectWaitingEnemys.Contains(enemy))
             return;
 
-        StartCoroutine(CollisionDamageApply(enemy));
+        StartCoroutine(StayEffectApply(enemy));
     }
 
     public void Activation(WeaponStat stat)
     {
         _stat = stat;
+        _stayEffectWaitingEnemys.Clear();
+        _waitForStayEffectInterval = new WaitForSeconds(stat.stayEffectInterval);
         StartCoroutine(Shoot());
         StartCoroutine(Rotation());
         StartCoroutine(TimeToDisable());
@@ -66,18 +69,19 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(_stat.timeToDisable);
         gameObject.SetActive(false);
     }
-    private IEnumerator CollisionDamageApply(Enemy enemy)
+    private IEnumerator StayEffectApply(Enemy enemy)
     {
-        _stayDamageWaitingEnemys.Add(enemy);
+        _stayEffectWaitingEnemys.Add(enemy);
 
         enemy.TakeDamage(_stat.damage);
+        enemy.Knockback(transform.position, _stat.knockback);
 
         if (_stat.penetrationCountToDontDisable > 0)
             _stat.penetrationCountToDontDisable--;
         else
             gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(_stat.stayDamageInterval);
-        _stayDamageWaitingEnemys.Remove(enemy);
+        
+        yield return _waitForStayEffectInterval;
+        _stayEffectWaitingEnemys.Remove(enemy);
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour 
 {
     [SerializeField]
+    private PlayerHealthController _targetPlayer;
+    [SerializeField]
     private float _spawnRadius;
     [SerializeField]
     private float _spawnDelay;
@@ -23,14 +25,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void Spawn()
     {
-        EnemyData[] enemyDatas = GameManager.EnemyDatas;
+        EnemyData[] enemyDatas = ResourceManager.EnemyDatas;
         if (enemyDatas.Length == 0)
             return;
         EnemyData data = enemyDatas[Random.Range(0, enemyDatas.Length)];
         float radius = _spawnRadius * Random.Range(0.9f, 1f);
         float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-        Vector3 dir = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
-        Vector3 playerPos = GameManager.Player.transform.position;
-        Enemy.Spawn(data, playerPos + dir * radius);
+        Vector3 direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+        Vector3 spawnPosision = _targetPlayer.transform.position + direction * radius;
+        Enemy.Spawn(data, spawnPosision, _targetPlayer);
     }
 }

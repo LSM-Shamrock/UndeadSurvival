@@ -24,9 +24,10 @@ MonoBehaviour:
     rotationRadius: 0
     rotationSpeed: 0
     shootSpeed: 10
-    damage: 10
-    stayDamageInterval: Infinity
-    penetrationCountToDontDisable: Infinity
+    damage: 50
+    knockback: 5
+    stayEffectInterval: Infinity
+    penetrationCountToDontDisable: 0
     timeToDisable: Infinity
     shootDistanceToDisable: 10
   levelupStatDelta:
@@ -38,7 +39,8 @@ MonoBehaviour:
     rotationSpeed: 0
     shootSpeed: 0
     damage: 0
-    stayDamageInterval: 0
+    knockback: 0
+    stayEffectInterval: 0
     penetrationCountToDontDisable: 0
     timeToDisable: 0
     shootDistanceToDisable: 0

@@ -7,11 +7,6 @@ public class DamageCount : MonoBehaviour
     [SerializeField]
     private TextMeshPro _textMeshPro;
 
-    private void Update()
-    {
-        transform.rotation = Camera.main.transform.rotation;
-    }
-
     public void EffectStart(Vector3 position, int damage)
     {
         transform.position = position + Vector3.up * 2f;

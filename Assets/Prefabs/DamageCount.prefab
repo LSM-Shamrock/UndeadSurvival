@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6701418419733698621}
   - component: {fileID: 3289725397680255361}
   - component: {fileID: 1537825877956606875}
+  - component: {fileID: -740272933572982008}
   - component: {fileID: 5581892560141131646}
   m_Layer: 0
   m_Name: DamageCount
@@ -177,6 +178,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 3289725397680255361}
   m_maskType: 0
+--- !u!114 &-740272933572982008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785055223463011327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed40b57ee35571b4a87b3b1fabf91f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5581892560141131646
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,8 @@ MonoBehaviour:
     rotationSpeed: 180
     shootSpeed: 0
     damage: 10
-    stayDamageInterval: Infinity
+    knockback: 5
+    stayEffectInterval: Infinity
     penetrationCountToDontDisable: Infinity
     timeToDisable: 5
     shootDistanceToDisable: Infinity
@@ -38,7 +39,8 @@ MonoBehaviour:
     rotationSpeed: 0
     shootSpeed: 0
     damage: 0
-    stayDamageInterval: 0
+    knockback: 0
+    stayEffectInterval: 0
     penetrationCountToDontDisable: 0
     timeToDisable: 0
     shootDistanceToDisable: 0
