@@ -12,35 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8ce6cf0b4dad748bc889e5e77416f7, type: 3}
   m_Name: Bullet
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7834774198369682764, guid: e112b75b4d363624589a583609aebc0e, type: 3}
-  description: 
-  levelupDescription: 
-  isAttachToLauncher: 0
+  skillName: 
+  skillDescription: 
+  skillLevelupDescription: 
+  skillProfileImage: {fileID: 0}
+  weaponPrefab: {fileID: 0}
+  isProjectileAttached: 0
   defaultStat:
-    activationInterval: 0.5
-    multiple: 1
-    repeatCount: 1
+    activationInterval: 0
+    multiple: 0
+    repeatCount: 0
     repeatInterval: 0
-    rotationRadius: 0
-    rotationSpeed: 0
-    shootSpeed: 10
-    damage: 50
-    knockback: 5
-    stayEffectInterval: Infinity
-    penetrationCountToDontDisable: 0
-    timeToDisable: Infinity
-    shootDistanceToDisable: 10
+    projectileStat:
+      shootSpeed: 0
+      rotationSpeed: 0
+      rotationRadius: 0
+      damage: 0
+      knockback: 0
+      stayEffectInterval: 0
+      penetrationCountToDontDisable: 0
+      timeToDisable: 0
+      shootDistanceToDisable: 0
   levelupStatDelta:
     activationInterval: 0
     multiple: 0
     repeatCount: 0
     repeatInterval: 0
-    rotationRadius: 0
-    rotationSpeed: 0
-    shootSpeed: 0
-    damage: 0
-    knockback: 0
-    stayEffectInterval: 0
-    penetrationCountToDontDisable: 0
-    timeToDisable: 0
-    shootDistanceToDisable: 0
+    projectileStat:
+      shootSpeed: 0
+      rotationSpeed: 0
+      rotationRadius: 0
+      damage: 0
+      knockback: 0
+      stayEffectInterval: 0
+      penetrationCountToDontDisable: 0
+      timeToDisable: 0
+      shootDistanceToDisable: 0

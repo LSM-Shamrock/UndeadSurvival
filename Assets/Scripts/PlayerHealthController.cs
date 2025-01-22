@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerHealthController : MonoBehaviour
 {
     [SerializeField]
-    private GaugeBar _healthBar;
+    private GaugeBarFill _healthBarFill;
     [SerializeField]
     private int _maxHealth;
     [SerializeField]
@@ -11,7 +11,7 @@ public class PlayerHealthController : MonoBehaviour
 
     private void LateUpdate()
     {
-        
+        _healthBarFill.SetFill(_maxHealth, _currentHealth);
     }
 
     public void TakeDamage(int damage)

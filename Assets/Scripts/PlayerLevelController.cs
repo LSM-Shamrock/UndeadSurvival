@@ -4,37 +4,45 @@ using UnityEngine.UIElements;
 public class PlayerLevelController : MonoBehaviour
 {
     [SerializeField]
-    private GaugeBar _expBar;
-    [SerializeField] 
-    private int _currentLevel = 1;
+    private GaugeBarFill _expBarFill;
     [SerializeField]
-    private int _currentExp;
-    public int NextLevelExp
+    private SkillChoiceUI _skillChoiceUI;
+
+    private int _level;
+    private int _exp;
+
+    public int LevelupExp
     {
-        get { return _currentLevel; }
+        get { return _level + 1; }
     }
 
     private void Awake()
     {
-        WeaponData[] weaponDatas = ResourceManager.WeaponDatas;
-        foreach (var weaponData in weaponDatas)
-            WeaponLauncher.Create(weaponData, transform);
+        _level = 1;
+        _exp = 0;
+
+
     }
 
     private void LateUpdate()
     {
-        
+        _expBarFill.SetFill(LevelupExp, _exp);
+
+        if (_exp >= LevelupExp)
+        {
+            _exp -= LevelupExp;
+            Levelup();
+        }
     }
 
     public void AddExp(int amount)
     {
-        _currentExp += amount;
-        if (_currentExp > NextLevelExp)
-            Levelup();
+        _exp += amount;
     }
 
     private void Levelup()
     {
-        
+        _level++;
+        _skillChoiceUI.Show();
     }
 }

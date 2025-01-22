@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Weapon : MonoBehaviour
+public class WeaponProjectile : MonoBehaviour
 {
-    private WeaponStat _stat;
+    private WeaponProjectileStat _stat;
     private List<Enemy> _stayEffectWaitingEnemys = new List<Enemy>();
     private WaitForSeconds _waitForStayEffectInterval;
 
@@ -19,6 +20,7 @@ public class Weapon : MonoBehaviour
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.tag != Enemy.TAG)
@@ -34,15 +36,24 @@ public class Weapon : MonoBehaviour
         StartCoroutine(StayEffectApply(enemy));
     }
 
-    public void Activation(WeaponStat stat)
+    public static WeaponProjectile Spawn(GameObject prefab, Transform parent, Vector3 position, Quaternion rotation, WeaponProjectileStat stat)
     {
-        _stat = stat;
-        _stayEffectWaitingEnemys.Clear();
-        _waitForStayEffectInterval = new WaitForSeconds(stat.stayEffectInterval);
-        StartCoroutine(Shoot());
-        StartCoroutine(Rotation());
-        StartCoroutine(TimeToDisable());
+        GameObject go = ObjectPoolManager.SpawnObject(prefab);
+        go.transform.parent = parent;
+        go.transform.position = position;
+        go.transform.rotation = rotation;
+
+        WeaponProjectile projectile = go.GetComponent<WeaponProjectile>() ?? go.AddComponent<WeaponProjectile>();
+        projectile._stat = stat;
+        projectile._stayEffectWaitingEnemys.Clear();
+        projectile._waitForStayEffectInterval = new WaitForSeconds(stat.stayEffectInterval);
+        projectile.StartCoroutine(projectile.Shoot());
+        projectile.StartCoroutine(projectile.Rotation());
+        projectile.StartCoroutine(projectile.TimeToDisable());
+
+        return projectile;
     }
+    
     private IEnumerator Shoot()
     {
         float shootDistance = 0f;
@@ -54,6 +65,7 @@ public class Weapon : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
+    
     private IEnumerator Rotation()
     {
         while (true)
@@ -64,11 +76,13 @@ public class Weapon : MonoBehaviour
             transform.Rotate(0, _stat.rotationSpeed * Time.deltaTime, 0);
         }
     }
+    
     private IEnumerator TimeToDisable()
     {
         yield return new WaitForSeconds(_stat.timeToDisable);
         gameObject.SetActive(false);
     }
+    
     private IEnumerator StayEffectApply(Enemy enemy)
     {
         _stayEffectWaitingEnemys.Add(enemy);
