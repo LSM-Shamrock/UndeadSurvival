@@ -6,8 +6,8 @@ using UnityEngine;
 [RequireComponent (typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
-    public static Enemy nearestEnemy;
-    public static float nearestEnemyDistance;
+    public static Transform nearest;
+    public static float nearestDistance;
 
     public static readonly string TAG = "Enemy";
     public readonly float DESPAWN_DISTANCE = 20f;
@@ -38,14 +38,13 @@ public class Enemy : MonoBehaviour
 
         float distance = Vector3.Distance(_targetPlayer.transform.position, transform.position);
 
-        if (nearestEnemy == null)
-            nearestEnemy = this;
-        else if (!nearestEnemy.gameObject.activeSelf)
-            nearestEnemy = this;
-        else if (distance < nearestEnemyDistance)
-            nearestEnemy = this;
-        if (nearestEnemy == this)
-            nearestEnemyDistance = distance;
+        if (nearest == null)
+            nearest = transform;
+        else if (!nearest.gameObject.activeSelf || distance < nearestDistance)
+            nearest = transform;
+
+        if (nearest == transform)
+            nearestDistance = distance;
 
         if (distance > DESPAWN_DISTANCE)
             gameObject.SetActive(false);

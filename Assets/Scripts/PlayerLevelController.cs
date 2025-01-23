@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Collections.Generic;
 
 public class PlayerLevelController : MonoBehaviour
 {
@@ -21,7 +21,11 @@ public class PlayerLevelController : MonoBehaviour
         _level = 1;
         _exp = 0;
 
-
+        WeaponData[] weaponDatas = ResourceManager.WeaponDatas;
+        if (weaponDatas == null)
+            return;
+        foreach (IWeaponData weaponData in weaponDatas)
+            WeaponActivator.Create(weaponData, transform);
     }
 
     private void LateUpdate()
@@ -43,6 +47,6 @@ public class PlayerLevelController : MonoBehaviour
     private void Levelup()
     {
         _level++;
-        _skillChoiceUI.Show();
+        //_skillChoiceUI.Show();
     }
 }

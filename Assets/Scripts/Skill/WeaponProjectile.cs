@@ -42,7 +42,6 @@ public class WeaponProjectile : MonoBehaviour
         go.transform.parent = parent;
         go.transform.position = position;
         go.transform.rotation = rotation;
-
         WeaponProjectile projectile = go.GetComponent<WeaponProjectile>() ?? go.AddComponent<WeaponProjectile>();
         projectile._stat = stat;
         projectile._stayEffectWaitingEnemys.Clear();
