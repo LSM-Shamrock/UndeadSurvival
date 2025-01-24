@@ -13,16 +13,16 @@ public class SkillChoiceButton : MonoBehaviour
 
     public Button Button { get { return _button; } }
 
-    public void Show(ISkillData skillData)
+    public void Show(ISkillInfo skillInfo, int level)
     {
-        _nameText.text = skillData.Name;
-        _profileImage.sprite = skillData.ProfileImage;
-        _descriptionText.text = skillData.Level == 0 ? skillData.Description : skillData.LevelupDescription;
+        _nameText.text = skillInfo.Name;
+        _profileImage.sprite = skillInfo.ProfileImage;
+        _descriptionText.text = level == 0 ? skillInfo.Description : skillInfo.LevelupDescription;
         for (int i = 0; i < _skillLevelMarks.Length; i++)
         {
-            if (1 + i <= skillData.Level)
+            if (1 + i <= level)
                 _skillLevelMarks[i].color = new Color(1f, 1f, 0f);
-            else if (1 + i == skillData.Level + 1)
+            else if (1 + i == level + 1)
                 _skillLevelMarks[i].color = new Color(0.5f, 0.5f, 0f);
             else
                 _skillLevelMarks[i].color = new Color(0f, 0f, 0f);

@@ -8,36 +8,32 @@ public class SkillChoiceUI : MonoBehaviour
     private GameObject _buttonPrefab;
 
     [SerializeField]
-    private List<SkillChoiceButton> _buttons;
+    private List<SkillChoiceButton> _buttonList;
 
-    public IEnumerator Show(List<ISkillData> skillDatas)
+    public IEnumerator Show(List<ISkillInfo> skillList)
     {
         Time.timeScale = 0f;
-        for (int i = _buttons.Count; i < skillDatas.Count; i++) 
-            _buttons.Add(Instantiate(_buttonPrefab).GetComponent<SkillChoiceButton>());
+        for (int i = _buttonList.Count; i < skillList.Count; i++) 
+            _buttonList.Add(Instantiate(_buttonPrefab).GetComponent<SkillChoiceButton>());
 
-        ISkillData choiceSkillData = null;
-        for (int i = 0; i < _buttons.Count; i++)
+        ISkillInfo choiceSkill = null;
+        for (int i = 0; i < _buttonList.Count; i++)
         {
-            if (i < skillDatas.Count)
+            if (i < skillList.Count)
             {
-                _buttons[i].Show(skillDatas[i]);
-                _buttons[i].Button.onClick.RemoveAllListeners();
-                _buttons[i].Button.onClick.AddListener(() =>
-                {
-                    choiceSkillData = skillDatas[i];
-                });
+                _buttonList[i].Button.onClick.RemoveAllListeners();
+                _buttonList[i].Button.onClick.AddListener(() => { choiceSkill = skillList[i]; });
+                //_buttonList[i].Show(skillList[i]);
             }
             else
-                _buttons[i].Hide();
+                _buttonList[i].Hide();
         }
         gameObject.SetActive(true);
-        yield return new WaitUntil(() => choiceSkillData != null);
+        yield return new WaitUntil(() => choiceSkill != null);
 
 
 
-
-        for (int i = 0; i < _buttons.Count; i++) _buttons[i].Hide();
+        for (int i = 0; i < _buttonList.Count; i++) _buttonList[i].Hide();
         gameObject.SetActive(false);
         Time.timeScale = 1f;
     }

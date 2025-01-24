@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
 
-public interface ISkillData
+public interface ISkillInfo
 {
-    public int Level { get; set; }
     public string Name { get; }
     public Sprite ProfileImage { get; }
     public string Description { get; }

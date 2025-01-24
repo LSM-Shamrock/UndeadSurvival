@@ -9,9 +9,8 @@ using static UnityEngine.EventSystems.EventTrigger;
 [RequireComponent(typeof(Rigidbody))]
 public class WeaponProjectile : MonoBehaviour
 {
-    private WeaponProjectileStat _stat;
-    private List<Enemy> _stayEffectWaitingEnemys = new List<Enemy>();
-    private WaitForSeconds _waitForStayEffectInterval;
+    public WeaponProjectileStat stat;
+    private Dictionary<Enemy, float> _stayEffecctTimers = new Dictionary<Enemy, float>();
 
     private void Awake()
     {
@@ -21,80 +20,51 @@ public class WeaponProjectile : MonoBehaviour
         rigidbody.isKinematic = true;
     }
 
+    private void OnEnable()
+    {
+        _stayEffecctTimers.Clear();
+    }
+
+    private void Update()
+    {
+        transform.Rotate(0f, stat.rotationSpeed * Time.deltaTime, 0f);
+        transform.Translate(Vector3.forward * stat.shootSpeed * Time.deltaTime);
+
+        stat.shootDistanceMax -= stat.shootSpeed * Time.deltaTime;
+        if (stat.shootDistanceMax <= 0f) gameObject.SetActive(false);
+
+        stat.lifetimeMax -= Time.deltaTime;
+        if (stat.lifetimeMax <= 0f) gameObject.SetActive(false);
+
+        foreach (var enemy in _stayEffecctTimers.Keys)
+        {
+            _stayEffecctTimers[enemy] -= Time.deltaTime;
+            if (_stayEffecctTimers[enemy] <= 0f) _stayEffecctTimers.Remove(enemy);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != Enemy.TAG) return;
+        Enemy enemy = other.GetComponent<Enemy>();
+        if (enemy == null) return;
+        _stayEffecctTimers.Remove(enemy);
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag != Enemy.TAG)
-            return;
-
+        if (other.tag != Enemy.TAG) return;
         Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy == null)
-            return;
+        if (enemy == null) return;
+        if (_stayEffecctTimers.ContainsKey(enemy)) return;
 
-        if (_stayEffectWaitingEnemys.Contains(enemy))
-            return;
+        enemy.TakeDamage(stat.hitDamage);
+        enemy.Knockback(transform.position, stat.hitKnockback);
 
-        StartCoroutine(StayEffectApply(enemy));
-    }
+        stat.hitPenetrationMax--;
+        if (stat.hitPenetrationMax <= 0) gameObject.SetActive(false);
 
-    public static WeaponProjectile Spawn(GameObject prefab, Transform parent, Vector3 position, Quaternion rotation, WeaponProjectileStat stat)
-    {
-        GameObject go = ObjectPoolManager.SpawnObject(prefab);
-        go.transform.parent = parent;
-        go.transform.position = position;
-        go.transform.rotation = rotation;
-        WeaponProjectile projectile = go.GetComponent<WeaponProjectile>() ?? go.AddComponent<WeaponProjectile>();
-        projectile._stat = stat;
-        projectile._stayEffectWaitingEnemys.Clear();
-        projectile._waitForStayEffectInterval = new WaitForSeconds(stat.stayEffectInterval);
-        projectile.StartCoroutine(projectile.Shoot());
-        projectile.StartCoroutine(projectile.Rotation());
-        projectile.StartCoroutine(projectile.TimeToDisable());
-
-        return projectile;
-    }
-    
-    private IEnumerator Shoot()
-    {
-        float shootDistance = 0f;
-        while (shootDistance < _stat.shootDistanceToDisable)
-        {
-            yield return null;
-            transform.Translate(Vector3.forward * _stat.shootSpeed * Time.deltaTime);
-            shootDistance += _stat.shootSpeed * Time.deltaTime;
-        }
-        gameObject.SetActive(false);
-    }
-    
-    private IEnumerator Rotation()
-    {
-        while (true)
-        {
-            transform.Translate(Vector3.forward * _stat.rotationRadius);
-            yield return null;
-            transform.Translate(Vector3.forward * -_stat.rotationRadius);
-            transform.Rotate(0, _stat.rotationSpeed * Time.deltaTime, 0);
-        }
-    }
-    
-    private IEnumerator TimeToDisable()
-    {
-        yield return new WaitForSeconds(_stat.timeToDisable);
-        gameObject.SetActive(false);
-    }
-    
-    private IEnumerator StayEffectApply(Enemy enemy)
-    {
-        _stayEffectWaitingEnemys.Add(enemy);
-
-        enemy.TakeDamage(_stat.damage);
-        enemy.Knockback(transform.position, _stat.knockback);
-
-        if (_stat.penetrationCountToDontDisable > 0)
-            _stat.penetrationCountToDontDisable--;
-        else
-            gameObject.SetActive(false);
-        
-        yield return _waitForStayEffectInterval;
-        _stayEffectWaitingEnemys.Remove(enemy);
+        _stayEffecctTimers[enemy] = stat.hitStayInterval;
     }
 }
+ 

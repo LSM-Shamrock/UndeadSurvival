@@ -24,27 +24,25 @@ MonoBehaviour:
     repeatActivationCount: 1
     repeatActivationInterval: 0
     projectileStat:
+      hitDamage: 10
+      hitKnockback: 5
+      hitPenetrationMax: 0
+      hitStayInterval: 0
+      lifetimeMax: 0
+      shootDistanceMax: 0
       shootSpeed: 10
       rotationSpeed: 0
-      rotationRadius: 0
-      knockback: 5
-      damage: 50
-      stayEffectInterval: Infinity
-      penetrationCountToDontDisable: 0
-      timeToDisable: Infinity
-      shootDistanceToDisable: 5
   _levelupStatDelta:
     activationInterval: 0
     multipleProjectileCount: 0
     repeatActivationCount: 0
     repeatActivationInterval: 0
     projectileStat:
+      hitDamage: 0
+      hitKnockback: 0
+      hitPenetrationMax: 0
+      hitStayInterval: 0
+      lifetimeMax: 0
+      shootDistanceMax: 0
       shootSpeed: 0
       rotationSpeed: 0
-      rotationRadius: 0
-      knockback: 0
-      damage: 0
-      stayEffectInterval: 0
-      penetrationCountToDontDisable: 0
-      timeToDisable: 0
-      shootDistanceToDisable: 0

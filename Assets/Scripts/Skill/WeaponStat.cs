@@ -33,40 +33,43 @@ public struct WeaponStat
 [Serializable]
 public struct WeaponProjectileStat
 {
+    [Tooltip("타격 피해")] public int hitDamage;
+    [Tooltip("타격 넉백")] public float hitKnockback;
+    [Tooltip("타격 관통 최대")] public float hitPenetrationMax;
+    [Tooltip("타격 유지 간격")] public float hitStayInterval;
+
+    [Tooltip("수명 최대")] public float lifetimeMax;
+
+    [Tooltip("발사 거리 최대")] public float shootDistanceMax;
     [Tooltip("발사 속도")] public float shootSpeed;
     [Tooltip("회전 속도")] public float rotationSpeed;
-    [Tooltip("회전 반지름")] public float rotationRadius;
-    [Tooltip("넉백")] public float knockback;
-    [Tooltip("피해량")] public int damage;
-    [Tooltip("체류 효과 간격")] public float stayEffectInterval;
-    [Tooltip("비활성화하지 않을 관통 횟수")] public float penetrationCountToDontDisable;
-    [Tooltip("비활성화할 시간")] public float timeToDisable;
-    [Tooltip("비활성화할 발사 거리")] public float shootDistanceToDisable;
 
     public static WeaponProjectileStat operator +(WeaponProjectileStat a, WeaponProjectileStat b)
     {
+        a.hitDamage += b.hitDamage;
+        a.hitKnockback += b.hitKnockback;
+        a.hitPenetrationMax += b.hitPenetrationMax;
+        a.hitStayInterval += b.hitStayInterval;
+
+        a.lifetimeMax += b.lifetimeMax;
+
+        a.shootDistanceMax += b.shootDistanceMax;
         a.shootSpeed += b.shootSpeed;
         a.rotationSpeed += b.rotationSpeed;
-        a.rotationRadius += b.rotationRadius;
-        a.knockback += b.knockback;
-        a.damage += b.damage;
-        a.stayEffectInterval += b.stayEffectInterval;
-        a.penetrationCountToDontDisable += b.penetrationCountToDontDisable;
-        a.timeToDisable += b.timeToDisable;
-        a.shootDistanceToDisable += b.shootDistanceToDisable;
         return a;
     }
     public static WeaponProjectileStat operator *(WeaponProjectileStat a, int b)
     {
+        a.hitDamage *= b;
+        a.hitKnockback *= b;
+        a.hitPenetrationMax *= b;
+        a.hitStayInterval *= b;
+
+        a.lifetimeMax *= b;
+
+        a.shootDistanceMax *= b;
         a.shootSpeed *= b;
         a.rotationSpeed *= b;
-        a.rotationRadius *= b;
-        a.knockback *= b;
-        a.damage *= b;
-        a.stayEffectInterval *= b;
-        a.penetrationCountToDontDisable *= b;
-        a.timeToDisable *= b;
-        a.shootDistanceToDisable *= b;
         return a;
     }
 }
