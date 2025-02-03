@@ -13,16 +13,16 @@ public class PlayerLevelController : MonoBehaviour
     private int _exp;
     public int LevelupExp { get { return _level + 1; } }
 
-    private WeaponData[] _weapons;
-    private Dictionary<ISkillInfo, int> _skills;
+    private WeaponData[] _weaponDatas;
+    private Dictionary<ISkillInfo, int> _skillLevels = new Dictionary<ISkillInfo, int>();
 
     private void Awake()
     {
-        _level = 1;
-        _exp = 0;
-        _weapons = ResourceManager.WeaponDatas;
-        foreach (var weapon in _weapons)
-            _skills[weapon] = 0;
+        //_level = 1;
+        //_exp = 0;
+        //_weaponDatas = ResourceManager.WeaponDatas;
+        //foreach (var weaponData in _weaponDatas)
+        //    _skillLevels[weaponData] = 0;
     }
 
     public void AddExp(int amount)

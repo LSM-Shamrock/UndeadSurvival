@@ -9,7 +9,10 @@ using static UnityEngine.EventSystems.EventTrigger;
 [RequireComponent(typeof(Rigidbody))]
 public class WeaponProjectile : MonoBehaviour
 {
-    public WeaponProjectileStat stat;
+    [SerializeField]
+    private WeaponProjectileStat _stat;
+    private float _currentLifetime;
+    private float _currentMoveDistance;
     private Dictionary<Enemy, float> _stayEffecctTimers = new Dictionary<Enemy, float>();
 
     private void Awake()
@@ -22,19 +25,20 @@ public class WeaponProjectile : MonoBehaviour
 
     private void OnEnable()
     {
+        _currentLifetime = 0f;
+        _currentMoveDistance = 0f;
         _stayEffecctTimers.Clear();
     }
 
     private void Update()
     {
-        transform.Rotate(0f, stat.rotationSpeed * Time.deltaTime, 0f);
-        transform.Translate(Vector3.forward * stat.shootSpeed * Time.deltaTime);
+        _currentLifetime += Time.deltaTime;
+        if (_currentLifetime >= _stat.lifetimeMax) gameObject.SetActive(false);
 
-        stat.shootDistanceMax -= stat.shootSpeed * Time.deltaTime;
-        if (stat.shootDistanceMax <= 0f) gameObject.SetActive(false);
-
-        stat.lifetimeMax -= Time.deltaTime;
-        if (stat.lifetimeMax <= 0f) gameObject.SetActive(false);
+        transform.Rotate(0f, _stat.rotationSpeed * Time.deltaTime, 0f);
+        transform.Translate(Vector3.forward * _stat.moveSpeed * Time.deltaTime);
+        _currentMoveDistance += _stat.moveSpeed * Time.deltaTime;
+        if (_currentMoveDistance >= _stat.moveDistanceMax) gameObject.SetActive(false);
 
         foreach (var enemy in _stayEffecctTimers.Keys)
         {
@@ -58,13 +62,13 @@ public class WeaponProjectile : MonoBehaviour
         if (enemy == null) return;
         if (_stayEffecctTimers.ContainsKey(enemy)) return;
 
-        enemy.TakeDamage(stat.hitDamage);
-        enemy.Knockback(transform.position, stat.hitKnockback);
+        enemy.TakeDamage(_stat.hitDamage);
+        enemy.Knockback(transform.position, _stat.hitKnockback);
 
-        stat.hitPenetrationMax--;
-        if (stat.hitPenetrationMax <= 0) gameObject.SetActive(false);
+        _stat.hitPenetrationMax--;
+        if (_stat.hitPenetrationMax <= 0) gameObject.SetActive(false);
 
-        _stayEffecctTimers[enemy] = stat.hitStayInterval;
+        _stayEffecctTimers[enemy] = _stat.hitStayInterval;
     }
 }
  

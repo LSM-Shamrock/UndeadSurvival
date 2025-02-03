@@ -9,4 +9,9 @@ public class Particle : MonoBehaviour
     {
         _particle.Play();
     }
+
+    private void OnDisable()
+    {
+        ObjectPoolManager.DespawnGameObject(gameObject);
+    }
 }

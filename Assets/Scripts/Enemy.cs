@@ -38,25 +38,19 @@ public class Enemy : MonoBehaviour
 
         float distance = Vector3.Distance(_targetPlayer.transform.position, transform.position);
 
-        if (nearest == null)
-            nearest = transform;
-        else if (!nearest.gameObject.activeSelf || distance < nearestDistance)
-            nearest = transform;
+        if (nearest == null) nearest = transform;
+        else if (!nearest.gameObject.activeSelf || distance < nearestDistance) nearest = transform;
 
-        if (nearest == transform)
-            nearestDistance = distance;
+        if (nearest == transform) nearestDistance = distance;
 
-        if (distance > DESPAWN_DISTANCE)
-            gameObject.SetActive(false);
+        if (distance > DESPAWN_DISTANCE) Despawn();
 
-        if (_collisionTimer > 0)
-            _collisionTimer -= Time.deltaTime;
+        if (_collisionTimer > 0) _collisionTimer -= Time.deltaTime;
     }
     
     private void OnCollisionStay(Collision collision)
     {
-        if (_collisionTimer > 0)
-            return;
+        if (_collisionTimer > 0) return;
 
         if (collision.gameObject == _targetPlayer.gameObject)
         {
@@ -65,20 +59,20 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public static void Spawn(EnemyData data, Vector3 position, PlayerHealthController targetPlayer)
+    public static Enemy Spawn(EnemyData data, Vector3 position, PlayerHealthController targetPlayer)
     {
-        GameObject go = ObjectPoolManager.SpawnObject(data.prefab);
+        GameObject go = ObjectPoolManager.SpawnGameObject(data.prefab, true);
         go.transform.position = position;
         Enemy enemy = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();
         enemy._stat = data.stat;
         enemy._health = data.stat.maxHealth;
         enemy._targetPlayer = targetPlayer;
+        return enemy;
     }
 
-    private void Dead()
+    private void Despawn()
     {
-        gameObject.SetActive(false);
-        Exp.DropExp(transform.position, _stat.dropExpAmount);
+        ObjectPoolManager.DespawnGameObject(gameObject);
     }
 
     public void Knockback(Vector3 point, float force)
@@ -101,5 +95,11 @@ public class Enemy : MonoBehaviour
             _health = 0;
             Dead();
         }
+    }
+
+    private void Dead()
+    {
+        Despawn();
+        Exp.DropExp(transform.position, _stat.dropExpAmount);
     }
 }

@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour 
 {
-    [SerializeField]
-    private PlayerHealthController _targetPlayer;
-    [SerializeField]
-    private float _spawnRadius;
-    [SerializeField]
-    private float _spawnDelay;
+    [SerializeField] private PlayerHealthController _targetPlayer;
+    [SerializeField] private float _spawnRadius;
+    [SerializeField] private float _spawnDelay;
     private float _spawnTimeer;
 
     private void Update()

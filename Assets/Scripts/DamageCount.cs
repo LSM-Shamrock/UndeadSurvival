@@ -17,7 +17,6 @@ public class DamageCount : MonoBehaviour
     {
         _textMeshPro.text = damage.ToString("N0");
         _textMeshPro.color = Color.white;
-
         float upSpeed = 1f;
         float speedDown = 1f;
         while (upSpeed > 0)
@@ -34,6 +33,6 @@ public class DamageCount : MonoBehaviour
             yield return null;
             color.a -= fadeOut * Time.deltaTime;
         }
-        gameObject.SetActive(false);
+        ObjectPoolManager.DespawnGameObject(gameObject);
     }
 }

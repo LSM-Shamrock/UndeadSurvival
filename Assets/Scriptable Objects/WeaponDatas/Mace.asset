@@ -12,37 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636d35bb121c2c741a7c9cc1e98a948c, type: 3}
   m_Name: Mace
   m_EditorClassIdentifier: 
-  _name: Mace
+  _name: 
   _profileImage: {fileID: 0}
-  _description: Mace Description
-  _levelupDescription: Mace Levelup Description
-  _projectilePrefab: {fileID: 7026188314622579200, guid: fa441585250c42f4aaaf6d8103762215, type: 3}
-  _isProjectileAttached: 1
+  _description: 
+  _levelupDescription: 
+  _projectilePrefab: {fileID: 0}
+  _isProjectileAttached: 0
   _defaultStat:
-    activationInterval: 10
-    multipleProjectileCount: 2
-    repeatActivationCount: 1
-    repeatActivationInterval: 0
+    launchInterval: 0
+    multipleProjectileCount: 0
+    repeatLaunchCount: 0
+    repeatLaunchInterval: 0
+    startingDistance: 0
+    rotationSpeed: 0
     projectileStat:
       hitDamage: 0
       hitKnockback: 0
       hitPenetrationMax: 0
       hitStayInterval: 0
       lifetimeMax: 0
-      shootDistanceMax: 0
-      shootSpeed: 0
+      moveDistanceMax: 0
+      moveSpeed: 0
       rotationSpeed: 0
   _levelupStatDelta:
-    activationInterval: 0
+    launchInterval: 0
     multipleProjectileCount: 0
-    repeatActivationCount: 0
-    repeatActivationInterval: 0
+    repeatLaunchCount: 0
+    repeatLaunchInterval: 0
+    startingDistance: 0
+    rotationSpeed: 0
     projectileStat:
       hitDamage: 0
       hitKnockback: 0
       hitPenetrationMax: 0
       hitStayInterval: 0
       lifetimeMax: 0
-      shootDistanceMax: 0
-      shootSpeed: 0
+      moveDistanceMax: 0
+      moveSpeed: 0
       rotationSpeed: 0

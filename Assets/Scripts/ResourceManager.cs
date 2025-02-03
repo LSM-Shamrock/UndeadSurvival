@@ -2,16 +2,7 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    private static ResourceManager instance;
-    private static ResourceManager Instance
-    {
-        get
-        {
-            if (instance == null)
-                instance = FindFirstObjectByType<ResourceManager>();
-            return instance;
-        }
-    }
+    private static ResourceManager _instance;
 
     [SerializeField] private GameObject _bloodParticle;
     [SerializeField] private GameObject _damageCount;
@@ -21,33 +12,34 @@ public class ResourceManager : MonoBehaviour
 
     public static GameObject BloodParticle
     {
-        get { return Instance._bloodParticle; }
+        get { return _instance._bloodParticle; }
     }
     public static GameObject DamageCount
     {
-        get { return Instance._damageCount; }
+        get { return _instance._damageCount; }
     }
     public static GameObject Exp
     {
-        get { return Instance._exp; }
+        get { return _instance._exp; }
     }
     public static EnemyData[] EnemyDatas
     {
-        get { return Instance._enemyDatas; }
+        get { return _instance._enemyDatas; }
     }
     public static WeaponData[] WeaponDatas
     {
-        get { return Instance._weaponDatas; }
+        get { return _instance._weaponDatas; }
     }
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-
-        if (instance == this)
-            DontDestroyOnLoad(gameObject);
+        if (_instance == null)
+        {
+            _instance = this;
+        }
         else
-            Destroy(gameObject);
+        {
+            Destroy(_instance);
+        }
     }
 }

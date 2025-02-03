@@ -29,6 +29,6 @@ public class PlayerHealthController : MonoBehaviour
 
     private void Dead() 
     {
-        Debug.Log("PlayerDead!");
+        //Debug.Log("PlayerDead!");
     }
 }

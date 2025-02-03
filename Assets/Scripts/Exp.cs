@@ -28,7 +28,7 @@ public class Exp : MonoBehaviour
         if (amount <= 0)
             return;
 
-        GameObject go = ObjectPoolManager.SpawnObject(ResourceManager.Exp);
+        GameObject go = ObjectPoolManager.SpawnGameObject(ResourceManager.Exp, true);
         go.transform.position = position;
         go.transform.localScale = Vector3.one + Vector3.one * amount / 10f;
         Exp exp = go.GetComponent<Exp>();
