@@ -84,8 +84,8 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        GameManager.BloodParticleEffect(transform.position);
-        GameManager.DamageCountEffect(transform.position, damage);
+        EffectManager.BloodParticleEffect(transform.position);
+        EffectManager.DamageCountEffect(transform.position, damage);
         if (_health > damage)
         {
             _health -= damage;

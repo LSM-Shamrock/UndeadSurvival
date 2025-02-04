@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class GameManager
+public static class EffectManager
 {
     public static void BloodParticleEffect(Vector3 position)
     {

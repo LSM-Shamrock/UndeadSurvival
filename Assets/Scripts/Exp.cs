@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum Tag
+{
+    Player,
+    Enemy,
+    WeaponProjectile,
+}
+
+
 public class Exp : MonoBehaviour
 {
     [SerializeField]
@@ -10,17 +18,17 @@ public class Exp : MonoBehaviour
     private void Update()
     {
         if (!Physics.Raycast(transform.position + Vector3.up, Vector3.down, Mathf.Infinity, _planeLayerMask))
-            gameObject.SetActive(false);
+            Remove();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerLevelController player = other.GetComponent<PlayerLevelController>();
-        if (player != null)
+        if (other.CompareTag("Player"))
         {
-            player.AddExp(amount);
-            gameObject.SetActive(false);
-        }   
+            
+            //player.AddExp(amount);
+            Remove();
+        }
     }
 
     public static void DropExp(Vector3 position, int amount)
@@ -33,5 +41,10 @@ public class Exp : MonoBehaviour
         go.transform.localScale = Vector3.one + Vector3.one * amount / 10f;
         Exp exp = go.GetComponent<Exp>();
         exp.amount = amount;
+    }
+
+    public void Remove()
+    {
+        ObjectPoolManager.DespawnGameObject(gameObject);
     }
 }

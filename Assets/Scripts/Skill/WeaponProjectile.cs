@@ -33,14 +33,14 @@ public class WeaponProjectile : MonoBehaviour
     private void Update()
     {
         _currentLifetime += Time.deltaTime;
-        if (_currentLifetime >= _stat.lifetimeMax) gameObject.SetActive(false);
+        if (_currentLifetime >= _stat.lifetimeMax) Destroy();
 
         transform.Rotate(0f, _stat.rotationSpeed * Time.deltaTime, 0f);
         transform.Translate(Vector3.forward * _stat.moveSpeed * Time.deltaTime);
         _currentMoveDistance += _stat.moveSpeed * Time.deltaTime;
-        if (_currentMoveDistance >= _stat.moveDistanceMax) gameObject.SetActive(false);
+        if (_currentMoveDistance >= _stat.moveDistanceMax) Destroy();
 
-        foreach (var enemy in _stayEffecctTimers.Keys)
+        foreach (var enemy in new List<Enemy>(_stayEffecctTimers.Keys))
         {
             _stayEffecctTimers[enemy] -= Time.deltaTime;
             if (_stayEffecctTimers[enemy] <= 0f) _stayEffecctTimers.Remove(enemy);
@@ -49,10 +49,12 @@ public class WeaponProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != Enemy.TAG) return;
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy == null) return;
-        _stayEffecctTimers.Remove(enemy);
+        if (other.tag == Enemy.TAG)
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy == null) return;
+            _stayEffecctTimers.Remove(enemy);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -66,9 +68,19 @@ public class WeaponProjectile : MonoBehaviour
         enemy.Knockback(transform.position, _stat.hitKnockback);
 
         _stat.hitPenetrationMax--;
-        if (_stat.hitPenetrationMax <= 0) gameObject.SetActive(false);
+        if (_stat.hitPenetrationMax <= 0) Destroy();
 
-        _stayEffecctTimers[enemy] = _stat.hitStayInterval;
+        _stayEffecctTimers[enemy] = _stat.hitTickInterval;
+    }
+
+    public void SetStat(WeaponProjectileStat stat)
+    {
+        _stat = stat;
+    }
+
+    private void Destroy()
+    {
+        ObjectPoolManager.DespawnGameObject(gameObject);
     }
 }
  

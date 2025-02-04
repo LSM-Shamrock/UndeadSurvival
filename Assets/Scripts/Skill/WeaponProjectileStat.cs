@@ -7,7 +7,7 @@ public struct WeaponProjectileStat
     [Tooltip("타격 피해")] public int hitDamage;
     [Tooltip("타격 넉백")] public float hitKnockback;
     [Tooltip("타격 관통 최대")] public float hitPenetrationMax;
-    [Tooltip("타격 유지 간격")] public float hitStayInterval;
+    [Tooltip("타격 틱 간격")] public float hitTickInterval;
 
     [Tooltip("수명 최대")] public float lifetimeMax;
 
@@ -20,7 +20,7 @@ public struct WeaponProjectileStat
         a.hitDamage += b.hitDamage;
         a.hitKnockback += b.hitKnockback;
         a.hitPenetrationMax += b.hitPenetrationMax;
-        a.hitStayInterval += b.hitStayInterval;
+        a.hitTickInterval += b.hitTickInterval;
 
         a.lifetimeMax += b.lifetimeMax;
 
@@ -35,7 +35,7 @@ public struct WeaponProjectileStat
         a.hitDamage *= b;
         a.hitKnockback *= b;
         a.hitPenetrationMax *= b;
-        a.hitStayInterval *= b;
+        a.hitTickInterval *= b;
 
         a.lifetimeMax *= b;
 

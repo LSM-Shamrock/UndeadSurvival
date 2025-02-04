@@ -2,12 +2,9 @@ using UnityEngine;
 
 public class PlayerHealthController : MonoBehaviour
 {
-    [SerializeField]
-    private GaugeBarFill _healthBarFill;
-    [SerializeField]
-    private int _maxHealth;
-    [SerializeField]
-    private int _currentHealth;
+    [SerializeField] private GaugeBarFill _healthBarFill;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _currentHealth;
 
     private void LateUpdate()
     {
@@ -16,10 +13,12 @@ public class PlayerHealthController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        GameManager.BloodParticleEffect(transform.position);
+        EffectManager.BloodParticleEffect(transform.position);
 
         if (_currentHealth > damage)
+        {
             _currentHealth -= damage;
+        }
         else
         {
             _currentHealth = 0;
