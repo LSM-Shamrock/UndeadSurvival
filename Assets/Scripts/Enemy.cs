@@ -9,10 +9,6 @@ public class Enemy : MonoBehaviour
     public static Transform nearest;
     public static float nearestDistance;
 
-    public static readonly string TAG = "Enemy";
-    public readonly float DESPAWN_DISTANCE = 20f;
-    public readonly float COLLISION_DELAY = 0.5f;
-
     private EnemyStat _stat;
     private int _health;
     private Rigidbody _rigidbody;
@@ -21,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.tag = TAG;
+        gameObject.tag = Tags.Enemy;
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.linearDamping = 1f;
         _rigidbody.angularDamping = 1f;
@@ -39,24 +35,25 @@ public class Enemy : MonoBehaviour
         float distance = Vector3.Distance(_targetPlayer.transform.position, transform.position);
 
         if (nearest == null) nearest = transform;
-        else if (!nearest.gameObject.activeSelf || distance < nearestDistance) nearest = transform;
-
+        if (!nearest.gameObject.activeSelf || distance < nearestDistance) nearest = transform;
         if (nearest == transform) nearestDistance = distance;
 
-        if (distance > DESPAWN_DISTANCE) Despawn();
-
-        if (_collisionTimer > 0) _collisionTimer -= Time.deltaTime;
+        _collisionTimer -= Time.deltaTime;
     }
     
     private void OnCollisionStay(Collision collision)
     {
         if (_collisionTimer > 0) return;
-
         if (collision.gameObject == _targetPlayer.gameObject)
         {
-            _collisionTimer = COLLISION_DELAY;
+            _collisionTimer = _stat.collisionInterval;
             _targetPlayer.TakeDamage(_stat.collisionDamage);
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(Tags.DespawnRange)) Despawn();
     }
 
     public static Enemy Spawn(EnemyData data, Vector3 position, PlayerHealthController targetPlayer)
@@ -100,6 +97,6 @@ public class Enemy : MonoBehaviour
     private void Dead()
     {
         Despawn();
-        Exp.DropExp(transform.position, _stat.dropExpAmount);
+        ExpItem.DropExp(transform.position, _stat.dropExpAmount);
     }
 }

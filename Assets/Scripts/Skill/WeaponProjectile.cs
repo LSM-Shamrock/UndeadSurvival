@@ -49,7 +49,7 @@ public class WeaponProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == Enemy.TAG)
+        if (other.CompareTag(Tags.Enemy))
         {
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy == null) return;
@@ -59,18 +59,20 @@ public class WeaponProjectile : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag != Enemy.TAG) return;
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy == null) return;
-        if (_stayEffecctTimers.ContainsKey(enemy)) return;
+        if (other.CompareTag(Tags.Enemy))
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy == null) return;
+            if (_stayEffecctTimers.ContainsKey(enemy)) return;
 
-        enemy.TakeDamage(_stat.hitDamage);
-        enemy.Knockback(transform.position, _stat.hitKnockback);
+            enemy.TakeDamage(_stat.hitDamage);
+            enemy.Knockback(transform.position, _stat.hitKnockback);
 
-        _stat.hitPenetrationMax--;
-        if (_stat.hitPenetrationMax <= 0) Destroy();
+            _stat.hitPenetrationMax--;
+            if (_stat.hitPenetrationMax <= 0) Destroy();
 
-        _stayEffecctTimers[enemy] = _stat.hitTickInterval;
+            _stayEffecctTimers[enemy] = _stat.hitTickInterval;
+        }
     }
 
     public void SetStat(WeaponProjectileStat stat)

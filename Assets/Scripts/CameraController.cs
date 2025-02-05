@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed;
-    [SerializeField]
-    private Transform _playerTransform;
-    [SerializeField]
+    [SerializeField] private float _speed;
+    [SerializeField] private Transform _playerTransform;
     private Vector3 _offsetVector;
+
+    private void Awake()
+    {
+        _offsetVector = transform.position - _playerTransform.position;
+    }
 
     private void LateUpdate()
     {

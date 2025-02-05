@@ -18,21 +18,21 @@ public class DamageCount : MonoBehaviour
         _textMeshPro.text = damage.ToString("N0");
         _textMeshPro.color = Color.white;
         float upSpeed = 1f;
-        float speedDown = 1f;
+        float speedDown = 2f;
         while (upSpeed > 0)
         {
             yield return null;
             transform.Translate(Vector3.up * upSpeed * Time.deltaTime);
             upSpeed -= speedDown * Time.deltaTime;
         }
-        Color color = _textMeshPro.color;
-        float fadeOut = 1f;
-        while (color.a > 0)
-        {
-            _textMeshPro.color = color;
-            yield return null;
-            color.a -= fadeOut * Time.deltaTime;
-        }
+        //Color color = _textMeshPro.color;
+        //float fadeOut = 2f;
+        //while (color.a > 0)
+        //{
+        //    _textMeshPro.color = color;
+        //    yield return null;
+        //    color.a -= fadeOut * Time.deltaTime;
+        //}
         ObjectPoolManager.DespawnGameObject(gameObject);
     }
 }

@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
-  - Plane
+  - DespawnRange
+  - ItemGetter
   layers:
   - Default
   - TransparentFX

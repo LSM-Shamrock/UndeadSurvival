@@ -17,4 +17,5 @@ MonoBehaviour:
     maxHealth: 100
     moveSpeed: 2
     collisionDamage: 10
+    collisionInterval: 0.5
     dropExpAmount: 20
