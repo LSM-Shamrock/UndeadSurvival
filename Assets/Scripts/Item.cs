@@ -5,7 +5,8 @@ public abstract class Item : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Pickup();
+        if (other.CompareTag(Tags.ItemPickupRange))
+            Pickup();
     }
 
     private void OnTriggerExit(Collider other)
@@ -21,9 +22,9 @@ public abstract class Item : MonoBehaviour
 
     protected void Pickup()
     {
-        ApplyReward();
+        ApplyGain();
         Remove();
     }
 
-    protected abstract void ApplyReward();
+    protected abstract void ApplyGain();
 }

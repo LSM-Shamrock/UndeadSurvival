@@ -14,7 +14,7 @@ public class ExpItem : Item
         exp.amount = amount;
     }
 
-    protected override void ApplyReward()
+    protected override void ApplyGain()
     {
         
     }
