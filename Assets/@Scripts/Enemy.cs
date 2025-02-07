@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
 
     public static Enemy Spawn(EnemyData data, Vector3 position, PlayerHealthController targetPlayer)
     {
-        GameObject go = ObjectPoolManager.SpawnGameObject(data.prefab, true);
+        GameObject go = ObjectPoolManager.SpawnFromPool(data.prefab, true);
         go.transform.position = position;
         Enemy enemy = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();
         enemy._stat = data.stat;
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
     private void Despawn()
     {
-        ObjectPoolManager.DespawnGameObject(gameObject);
+        ObjectPoolManager.DespawnToPool(gameObject);
     }
 
     public void Knockback(Vector3 point, float force)

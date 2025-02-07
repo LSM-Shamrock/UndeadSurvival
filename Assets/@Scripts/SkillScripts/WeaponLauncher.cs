@@ -36,7 +36,7 @@ public class WeaponLauncher : MonoBehaviour
             for (int j = 1; j <= _stat.multipleProjectileCount; j++)
             {
                 rotation *= Quaternion.Euler(0f, 360f / _stat.multipleProjectileCount, 0f);
-                GameObject go = ObjectPoolManager.SpawnGameObject(_projectilePrefab, true);
+                GameObject go = ObjectPoolManager.SpawnFromPool(_projectilePrefab, true);
                 go.transform.parent = projectileParent;
                 go.transform.position = transform.position;
                 go.transform.rotation = rotation;

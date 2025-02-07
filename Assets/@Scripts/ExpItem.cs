@@ -7,7 +7,7 @@ public class ExpItem : Item
     public static void DropExp(Vector3 position, int amount)
     {
         if (amount <= 0) return;
-        GameObject go = ObjectPoolManager.SpawnGameObject(ResourceManager.Exp, true);
+        GameObject go = ObjectPoolManager.SpawnFromPool(ResourceManager.Exp, true);
         go.transform.position = position;
         go.transform.localScale = Vector3.one + Vector3.one * amount / 10f;
         ExpItem exp = go.GetComponent<ExpItem>();
