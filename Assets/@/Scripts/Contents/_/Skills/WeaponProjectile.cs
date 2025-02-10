@@ -82,7 +82,7 @@ public class WeaponProjectile : MonoBehaviour
 
     private void Destroy()
     {
-        ObjectPoolManager.DespawnToPool(gameObject);
+        PoolManager.DespawnToPool(gameObject);
     }
 }
  

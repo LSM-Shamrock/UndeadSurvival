@@ -17,7 +17,7 @@ public abstract class Item : MonoBehaviour
 
     protected void Remove()
     {
-        ObjectPoolManager.DespawnToPool(gameObject);
+        PoolManager.DespawnToPool(gameObject);
     }
 
     protected void Pickup()

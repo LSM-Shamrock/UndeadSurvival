@@ -35,14 +35,14 @@ public class WeaponLauncher : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(firstDir);
             for (int j = 1; j <= _stat.multipleProjectileCount; j++)
             {
-                rotation *= Quaternion.Euler(0f, 360f / _stat.multipleProjectileCount, 0f);
-                GameObject go = ObjectPoolManager.SpawnFromPool(_projectilePrefab, true);
-                go.transform.parent = projectileParent;
-                go.transform.position = transform.position;
-                go.transform.rotation = rotation;
-                go.transform.Translate(Vector3.forward * _stat.startingDistance);
-                WeaponProjectile projectile = (go.GetComponent<WeaponProjectile>() ?? go.AddComponent<WeaponProjectile>());
-                projectile.SetStat(_stat.projectileStat);
+                //rotation *= Quaternion.Euler(0f, 360f / _stat.multipleProjectileCount, 0f);
+                //GameObject go = PoolManager.SpawnFromPool(_projectilePrefab, true);
+                //go.transform.parent = projectileParent;
+                //go.transform.position = transform.position;
+                //go.transform.rotation = rotation;
+                //go.transform.Translate(Vector3.forward * _stat.startingDistance);
+                //WeaponProjectile projectile = (go.GetComponent<WeaponProjectile>() ?? go.AddComponent<WeaponProjectile>());
+                //projectile.SetStat(_stat.projectileStat);
             }
             if (i < _stat.repeatLaunchCount)
                 yield return waitForRepeatLaunchInterval;

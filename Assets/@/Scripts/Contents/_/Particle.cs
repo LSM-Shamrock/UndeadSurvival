@@ -12,6 +12,6 @@ public class Particle : MonoBehaviour
 
     private void OnDisable()
     {
-        ObjectPoolManager.DespawnToPool(gameObject);
+        PoolManager.DespawnToPool(gameObject);
     }
 }

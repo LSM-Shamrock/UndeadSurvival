@@ -56,20 +56,20 @@ public class Enemy : MonoBehaviour
         //if (other.CompareTag(Tags.DespawnRange)) Despawn();
     }
 
-    public static Enemy Spawn(EnemyData data, Vector3 position, PlayerHealthController targetPlayer)
-    {
-        GameObject go = ObjectPoolManager.SpawnFromPool(data.prefab, true);
-        go.transform.position = position;
-        Enemy enemy = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();
-        enemy._stat = data.stat;
-        enemy._health = data.stat.maxHealth;
-        enemy._targetPlayer = targetPlayer;
-        return enemy;
-    }
+    //public static Enemy Spawn(EnemyData data, Vector3 position, PlayerHealthController targetPlayer)
+    //{
+    //    GameObject go = PoolManager.SpawnFromPool(data.prefab, true);
+    //    go.transform.position = position;
+    //    Enemy enemy = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();
+    //    enemy._stat = data.stat;
+    //    enemy._health = data.stat.maxHealth;
+    //    enemy._targetPlayer = targetPlayer;
+    //    return enemy;
+    //}
 
     private void Despawn()
     {
-        ObjectPoolManager.DespawnToPool(gameObject);
+        PoolManager.DespawnToPool(gameObject);
     }
 
     public void Knockback(Vector3 point, float force)
