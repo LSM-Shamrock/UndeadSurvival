@@ -33,6 +33,6 @@ public class DamageCount : MonoBehaviour
         //    yield return null;
         //    color.a -= fadeOut * Time.deltaTime;
         //}
-        PoolManager.DespawnToPool(gameObject);
+        PoolManager.RemoveToPool(gameObject);
     }
 }

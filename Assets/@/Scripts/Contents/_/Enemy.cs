@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
     private void Despawn()
     {
-        PoolManager.DespawnToPool(gameObject);
+        PoolManager.RemoveToPool(gameObject);
     }
 
     public void Knockback(Vector3 point, float force)

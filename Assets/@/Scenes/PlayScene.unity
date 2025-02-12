@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585549}
-  - component: {fileID: 330585550}
+  - component: {fileID: 330585551}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -271,7 +271,7 @@ Camera:
   far clip plane: 100
   field of view: 0.00001
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -359,7 +359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetAspect: 1.7777778
---- !u!114 &330585550
+--- !u!114 &330585551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,10 +368,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5493bdc1b0b6b5f4195c85c32bc041ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 45daca0c3560b604f9995b2f28a74b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 10
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,8 +523,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 963734565}
-  _camera: {fileID: 330585550}
+  _camera: {fileID: 330585551}
   _plane: {fileID: 6287740389865154452}
+  _enemyPrefabs:
+  - {fileID: 7855225948450215355, guid: 8747ca7e303d7684b955eb812de8f814, type: 3}
+  _enemySpawnDistanceMin: 19
+  _enemySpawnDistanceMax: 21
+  _enemySpawnInterval: 0.05
+  _despawnDistance: 25
 --- !u!4 &565957073
 Transform:
   m_ObjectHideFlags: 0
@@ -667,7 +673,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b5b114556fe7d874b896409c43cf2170, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b5b114556fe7d874b896409c43cf2170, type: 3}
       propertyPath: m_LocalPosition.y
@@ -745,7 +751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a18a94b74a336d346b2705cf22988ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 10
+  _moveSpeed: 8
 --- !u!54 &963734566
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1077,7 +1083,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3177569249001758225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86ab3644fb16cd14f880061a0b2edaf5, type: 3}
+  m_Script: {fileID: 11500000, guid: 648f3d5eb6a875445b7869031085a37c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _tileSize: 10
@@ -1091,7 +1097,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 1, z: 4}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

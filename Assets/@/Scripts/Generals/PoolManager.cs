@@ -10,7 +10,7 @@ public static class PoolManager
     {
         if (_poolParent == null)
         {
-            GameObject go = new GameObject("Pool Parent");
+            var go = new GameObject("Pool Parent");
             GameObject.DontDestroyOnLoad(go);
             go.SetActive(false);
             _poolParent = go.transform;
@@ -18,10 +18,10 @@ public static class PoolManager
         return _poolParent;
     }
 
-    public static GameObject SpawnFromPool(GameObject prefab)
+    public static GameObject CreateFromPool(GameObject prefab)
     {
         var key = prefab.name;
-        if (_pool.ContainsKey(key)) _pool.Add(key, new());
+        if (!_pool.ContainsKey(key)) _pool.Add(key, new());
         var pool = _pool[key];
         var go = pool.Count > 0 ? pool.Dequeue() : null;
         if (go == null)
@@ -33,7 +33,7 @@ public static class PoolManager
         return go;
     }
 
-    public static void DespawnToPool(GameObject target)
+    public static void RemoveToPool(GameObject target)
     {
         target.transform.SetParent(GetPoolParent());
         var key = target.name;

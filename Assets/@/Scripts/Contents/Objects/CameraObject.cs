@@ -1,7 +1,7 @@
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class CameraController : ControllerBase
+public class CameraObject : ObjectBase
 {
     [SerializeField] 
     private float _speed;

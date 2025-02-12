@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CameraController))]
+[RequireComponent(typeof(CameraObject))]
 public class CameraAspectController : MonoBehaviour
 {
     [SerializeField] 
