@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayScene : SceneBase
+public class PlayScene : SceneScript
 {
     [SerializeField] private PlayerObject _player;
     [SerializeField] private CameraObject _camera;

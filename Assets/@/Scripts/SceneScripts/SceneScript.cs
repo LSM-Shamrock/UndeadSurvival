@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public abstract class SceneBase : MonoBehaviour
+public abstract class SceneScript : MonoBehaviour
 {
     protected GameObject Create(GameObject prefab)
     { return PoolManager.CreateFromPool(prefab); }
